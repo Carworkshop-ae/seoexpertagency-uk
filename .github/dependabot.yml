@@ -1,0 +1,19 @@
+# Keeps dependencies patched automatically. The first audit of this repo found
+# 44 advisories (29 high) that had accumulated silently; weekly PRs prevent a
+# repeat. Patch/minor updates are grouped so routine bumps arrive as one PR and
+# only majors need individual review.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      patch-and-minor:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

@@ -1,0 +1,54 @@
+name: CI
+
+# Runs type-check, lint, test, and build on every push and PR.
+# Vercel handles the actual deploy via its Git integration — this workflow is
+# the quality gate that must pass first.
+
+on:
+  push:
+    branches: [main, 'feat/*', 'fix/*', 'chore/*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # pnpm must be on PATH before setup-node, so that `cache: pnpm` can resolve
+      # the store path. The version here is kept in sync with `packageManager`
+      # in package.json.
+      - name: Setup pnpm
+        run: corepack enable && corepack prepare pnpm@9.15.4 --activate || npm install -g pnpm@9.15.4
+
+      # Node version comes from .nvmrc — the single source of truth shared with
+      # local development and the Vercel project setting.
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key' }}
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.com' }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-service-role-key' }}
+          REVALIDATION_SECRET: ${{ secrets.REVALIDATION_SECRET || 'placeholder_revalidation_secret_min_32_chars' }}
+
+

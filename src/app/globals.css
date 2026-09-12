@@ -1,0 +1,323 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors - Modern SEO Agency Blue + White Identity */
+  --color-primary: #0066FF;
+  --color-primary-50: #F0F7FF;
+  --color-primary-100: #E0EFFF;
+  --color-primary-200: #BAE0FD;
+  --color-primary-500: #0066FF;
+  --color-primary-600: #0052CC;
+  --color-primary-700: #003D99;
+  --color-primary-800: #0A2540;
+  --color-primary-900: #0A1128;
+  --color-cta: #0066FF;
+  --color-cta-hover: #0052CC;
+  --color-dark: #0F172A;
+  --color-navy-900: #0A1128;
+  --color-mid: #475569;
+  --color-subtle: #94A3B8;
+  --color-light-bg: #F8FAFC;
+  --color-card-bg: #FFFFFF;
+  --color-border: #E2E8F0;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-info: #0066FF;
+
+  /* Typography */
+  --font-sans: var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+
+  /* Shadows — premium, crisp, multi-layered */
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+  --shadow-elevated: 0 10px 30px -10px rgba(0, 102, 255, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.05);
+  --shadow-hover: 0 20px 40px -15px rgba(0, 102, 255, 0.18), 0 8px 16px -6px rgba(15, 23, 42, 0.06);
+  --shadow-ring: 0 0 0 1px rgba(0, 102, 255, 0.1);
+
+  /* Premium surface + accent tokens */
+  --hairline: #E2E8F0;
+  --ink-50: #F8FAFC;
+  --primary-soft: #F0F7FF;
+
+  /* Gradients */
+  --gradient-cta: linear-gradient(135deg, #0066FF 0%, #0052CC 100%);
+  --gradient-primary: linear-gradient(135deg, #0066FF 0%, #003D99 100%);
+  --gradient-card: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  --gradient-hero: linear-gradient(180deg, #F0F7FF 0%, #FFFFFF 100%);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #0F172A;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Pointer cursor helpers */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+label[for],
+summary,
+select:not(:disabled),
+input[type="checkbox"]:not(:disabled),
+input[type="radio"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+input[type="button"]:not(:disabled) {
+  cursor: pointer;
+}
+
+button:disabled,
+[role="button"][aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+/* Admin shell scroll locking */
+html:has(body .admin-shell),
+body:has(.admin-shell) {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ─── Premium SEO Agency Design System ─────────────────────────────────── */
+
+.text-balance { text-wrap: balance; }
+.text-pretty { text-wrap: pretty; }
+.display-tight { letter-spacing: -0.025em; line-height: 1.08; }
+
+/* Soft radial mesh background for hero / CTA bands */
+.bg-mesh {
+  background-color: #F8FAFC;
+  background-image:
+    radial-gradient(45rem 45rem at 10% -10%, rgba(0, 102, 255, 0.12), transparent 60%),
+    radial-gradient(40rem 40rem at 90% 10%, rgba(0, 82, 204, 0.08), transparent 55%),
+    radial-gradient(35rem 35rem at 50% 110%, rgba(0, 102, 255, 0.06), transparent 60%);
+}
+.bg-mesh-dark {
+  background-color: #0A1128;
+  background-image:
+    radial-gradient(45rem 45rem at 10% -10%, rgba(0, 102, 255, 0.35), transparent 55%),
+    radial-gradient(40rem 40rem at 95% 20%, rgba(0, 82, 204, 0.25), transparent 55%);
+}
+
+/* Deep brand-blue hero field. Mostly flat, with two soft radial lifts so a
+   full-bleed area this large doesn't band. Built from the primary ramp
+   (#003D99 / #0066FF / #0A2540) — no off-palette hue. */
+.bg-hero-deep {
+  background-color: #003D99;
+  background-image:
+    radial-gradient(45rem 45rem at 80% -15%, rgba(0, 102, 255, 0.45), transparent 60%),
+    radial-gradient(38rem 38rem at 5% 105%, rgba(10, 37, 64, 0.55), transparent 58%);
+}
+
+/* Header surface. Same #003D99 base as .bg-hero-deep, plus a glow centred just
+   below the bar so the brightening continues into the hero's top-right instead
+   of stopping at a hard horizontal step. Sits directly above the hero on the 6
+   hero routes, and reads as a plain blue bar everywhere else. */
+.bg-header-deep {
+  background-color: #003D99;
+  background-image: radial-gradient(40rem 24rem at 78% 150%, rgba(0, 102, 255, 0.38), transparent 65%);
+}
+
+/* Gradient surfaces */
+.bg-gradient-cta { background-image: var(--gradient-cta); }
+.bg-gradient-primary { background-image: var(--gradient-primary); }
+.bg-gradient-card { background-image: var(--gradient-card); }
+.bg-gradient-hero { background-image: var(--gradient-hero); }
+
+/* Glassy elevated card */
+.card-premium {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--hairline);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-card);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-premium:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
+  border-color: #BAE0FD;
+}
+
+/* Highlighted featured card */
+.card-featured {
+  background: #FFFFFF;
+  border: 2px solid #0066FF;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-elevated);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-featured:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
+}
+
+/* Hairline divider color helper */
+.border-hairline { border-color: var(--hairline); }
+
+/* Subtle dotted grid texture overlay (use as ::before via class) */
+.texture-dots {
+  background-image: radial-gradient(rgba(31,41,55,0.05) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Light-ink counterpart for dark surfaces. Kept as a sibling rather than a
+   variant of .texture-dots, whose dark ink is correct for its own consumers
+   (CTABanner, PageHeader) and must not change. */
+.texture-dots-light {
+  background-image: radial-gradient(rgba(255,255,255,0.10) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* ─── Entrance animations ───────────────────────────────────────────────── */
+/* Hand-rolled because `tailwindcss-animate` is not a dependency — the
+   `animate-in` / `slide-in-from-*` utilities these replace were silently
+   inert. Reduced motion is honoured by the global rule above. */
+@keyframes enter-fade { from { opacity: 0 } to { opacity: 1 } }
+@keyframes enter-zoom { from { opacity: 0; transform: scale(.95) } to { opacity: 1; transform: none } }
+
+.anim-fade { animation: enter-fade .2s cubic-bezier(.16,1,.3,1) both }
+.anim-zoom { animation: enter-zoom .2s cubic-bezier(.16,1,.3,1) both }
+
+/* ─── Scroll-reveal (pure CSS, toggled by IntersectionObserver) ─────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+.reveal-fade { transform: none; }
+.reveal-left { transform: translateX(-20px); }
+.reveal-right { transform: translateX(20px); }
+.reveal-left.is-visible, .reveal-right.is-visible { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* ─── Rich content (admin-authored HTML) — Tailwind v4 has no prose plugin ── */
+.rich-content { color: #334155; font-size: 1rem; line-height: 1.75; }
+.rich-content > :first-child { margin-top: 0; }
+.rich-content h1 { font-size: clamp(1.75rem, 3vw, 2.25rem); font-weight: 800; color: #0F172A; letter-spacing: -0.01em; line-height: 1.2; margin: 2rem 0 1rem; }
+.rich-content h2 { font-size: clamp(1.4rem, 2.4vw, 1.75rem); font-weight: 800; color: #0F172A; letter-spacing: -0.01em; line-height: 1.25; margin: 2rem 0 0.75rem; }
+.rich-content h3 { font-size: 1.25rem; font-weight: 700; color: #0F172A; margin: 1.5rem 0 0.5rem; }
+.rich-content h4 { font-size: 1.1rem; font-weight: 700; color: #1F2937; margin: 1.25rem 0 0.5rem; }
+.rich-content p { margin: 0 0 1.1rem; }
+.rich-content a { color: #0066FF; font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.rich-content a:hover { color: #0052CC; }
+.rich-content strong, .rich-content b { font-weight: 700; color: #0F172A; }
+.rich-content ul, .rich-content ol { margin: 0 0 1.1rem; padding-left: 1.4rem; }
+.rich-content ul { list-style: disc; }
+.rich-content ol { list-style: decimal; }
+.rich-content li { margin: 0.4rem 0; padding-left: 0.25rem; }
+.rich-content li::marker { color: #0066FF; }
+.rich-content blockquote { border-left: 3px solid #0066FF; background: #F0F7FF; padding: 0.75rem 1.1rem; margin: 1.25rem 0; border-radius: 0.5rem; color: #334155; }
+.rich-content img { border-radius: 0.75rem; margin: 1.25rem 0; max-width: 100%; height: auto; }
+.rich-content hr { border: 0; border-top: 1px solid var(--hairline); margin: 2rem 0; }
+.rich-content table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.95rem; }
+.rich-content th, .rich-content td { border: 1px solid var(--hairline); padding: 0.6rem 0.8rem; text-align: left; }
+.rich-content th { background: #F8FAFC; font-weight: 700; color: #0F172A; }
+
+/* ─── Themed scrollbar ──────────────────────────────────────────────────── */
+html { scrollbar-width: thin; scrollbar-color: #0066FF #F0F7FF; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #F8FAFC; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #0066FF, #0052CC);
+  border-radius: 9999px;
+  border: 2px solid #F8FAFC;
+}
+::-webkit-scrollbar-thumb:hover { background: #003D99; }
+
+/* Thin, subtle scrollbar for the admin sidebar nav */
+.admin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #4B5563 transparent;
+}
+.admin-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.admin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.admin-scroll::-webkit-scrollbar-thumb {
+  background-color: #4B5563;
+  border-radius: 9999px;
+}
+.admin-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #6B7280;
+}
+
+/* ─── Admin design tokens ──────────────────────────────────────────────── */
+:root {
+  --admin-sidebar-bg: #0F1117;
+  --admin-sidebar-text: #A1A1AA;
+  --admin-sidebar-active: #FFFFFF;
+  --admin-sidebar-active-bg: #1E1E2E;
+  --admin-sidebar-hover: #1A1A2E;
+  --admin-sidebar-border: #27272A;
+  --admin-sidebar-section: #52525B;
+
+  --admin-content-bg: #F8F9FC;
+  --admin-card-bg: #FFFFFF;
+  --admin-card-border: #E4E4E7;
+  --admin-card-shadow: 0 1px 3px rgba(0,0,0,0.08);
+
+  --admin-primary: #4472C4;
+  --admin-primary-hover: #3560B0;
+  --admin-cta: #E8601C;
+  --admin-danger: #EF4444;
+  --admin-success: #22C55E;
+  --admin-warning: #F59E0B;
+
+  --admin-text-primary: #09090B;
+  --admin-text-secondary: #71717A;
+  --admin-text-muted: #A1A1AA;
+
+  --admin-input-bg: #FFFFFF;
+  --admin-input-border: #D4D4D8;
+  --admin-input-focus: #4472C4;
+  --admin-input-radius: 8px;
+}
+
+/* Tiptap editor content baseline inside admin */
+.admin-rte .ProseMirror { min-height: 200px; outline: none; }
+.admin-rte .ProseMirror p { margin: 0 0 0.5rem; }
+.admin-rte .ProseMirror:focus { outline: none; }
+.admin-rte .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left; color: #A1A1AA; pointer-events: none; height: 0;
+}
+.admin-rte .ProseMirror table {
+  border-collapse: collapse; width: 100%; margin: 0.5rem 0; table-layout: fixed;
+}
+.admin-rte .ProseMirror th, .admin-rte .ProseMirror td {
+  border: 1px solid #D1D5DB; padding: 0.35rem 0.5rem; vertical-align: top;
+}
+.admin-rte .ProseMirror th { background: #F3F4F6; font-weight: 600; }
+.admin-rte .ProseMirror .selectedCell { background: #EEF3FB; }
+.admin-rte .ProseMirror[dir='rtl'] { direction: rtl; text-align: right; }

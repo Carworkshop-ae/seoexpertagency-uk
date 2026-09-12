@@ -1,0 +1,61 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+# macOS AppleDouble sidecars (created on non-HFS volumes)
+._*
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+!.env.example
+!.env.migrate.example
+
+# vercel
+.vercel
+
+# supabase
+supabase/.temp
+supabase/dumps
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# pnpm store (local package cache — multi-GB, must never be committed)
+.pnpm-store/
+
+# test artefacts
+/test-results/
+/playwright-report/
+
+# supabase local CLI state
+supabase/.branches
+supabase/snippets
+.git.old/

@@ -1,0 +1,2 @@
+# Playwright specs live here (testDir in playwright.config.ts).
+# The previous suite was carworkshop-specific and was removed during the rebrand.

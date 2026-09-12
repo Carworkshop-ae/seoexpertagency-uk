@@ -1,0 +1,6 @@
+packages:
+  - .
+
+# Build scripts are allowlisted in package.json under `pnpm.onlyBuiltDependencies`,
+# which is the location pnpm 9 (the pinned version) reads. Do not duplicate it here —
+# the pnpm 10 `onlyBuiltDependencies` key in this file is silently ignored by pnpm 9.
