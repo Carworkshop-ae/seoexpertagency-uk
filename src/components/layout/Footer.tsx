@@ -13,7 +13,7 @@ export async function Footer({ settings }: FooterProps) {
   const textColor = settings.footer_text_color || '#FFFFFF'
 
   const phone = settings.footer_business_phone || '+971 4 800 736'
-  const email = settings.footer_business_email || 'hello@seoexpertagency.com'
+  const email = settings.footer_business_email || 'hello@seoexpertagency.co.uk'
   const address = settings.footer_business_address || 'Level 24, Boulevard Plaza Tower 1, Downtown Dubai, UAE'
 
   return (

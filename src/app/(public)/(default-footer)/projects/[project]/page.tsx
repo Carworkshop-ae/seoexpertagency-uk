@@ -10,6 +10,7 @@ import { getProjects } from '@/lib/data/content'
 import { generateServicePageSchema } from '@/lib/page-engine/schema'
 import { CustomSchemas } from '@/components/seo/CustomSchemas'
 import { getProjectSeo } from '@/lib/get-page-seo'
+import { getHreflangCode } from '@/lib/market'
 
 interface ProjectPageProps {
   params: Promise<{ project: string }>
@@ -28,18 +29,20 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     return { title: 'Case Study Not Found | SEO Expert Agency' }
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.co.uk'
+  const url = `${siteUrl}/projects/${project.slug}`
 
   return {
     title: `${project.title} — Case Study | SEO Expert Agency`,
     description: project.summary,
     alternates: {
-      canonical: `${siteUrl}/projects/${project.slug}`,
+      canonical: url,
+      languages: { [getHreflangCode()]: url, 'x-default': url },
     },
     openGraph: {
       title: `${project.title} — Case Study | SEO Expert Agency`,
       description: project.summary,
-      url: `${siteUrl}/projects/${project.slug}`,
+      url,
       type: 'article',
     },
   }
@@ -54,7 +57,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
   if (!project) notFound()
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.co.uk'
   const projectUrl = `${siteUrl}/projects/${project.slug}`
 
   const seoJson = await getProjectSeo(slug)

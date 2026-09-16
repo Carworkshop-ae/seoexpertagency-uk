@@ -20,7 +20,7 @@ interface ContactContent {
 
 const merge = (s: Partial<ContactContent> | null): ContactContent => ({
   hero: { h1: 'Get in Touch With Our SEO Strategists', subheadline: 'Request a comprehensive technical audit, discuss custom retainers, or explore strategic partnerships.', ...s?.hero },
-  details: { visible: true, phone: '', whatsapp: '', email: 'info@seoexpertagency.com', address: '', weekday_hours: 'Monday – Friday: 9am – 6pm', weekend_hours: 'Saturday – Sunday: Closed', ...s?.details },
+  details: { visible: true, phone: '', whatsapp: '', email: 'info@seoexpertagency.co.uk', address: '', weekday_hours: 'Monday – Friday: 9am – 6pm', weekend_hours: 'Saturday – Sunday: Closed', ...s?.details },
   maps: { visible: true, embed_url: '', height: '400px', ...s?.maps },
   form: { visible: true, heading: 'Send Us a Message', success_message: "Thank you! We'll contact you within 24 hours.", show_service: true, ...s?.form },
   faq: { visible: true, heading: 'Common Questions', faqs: [], ...s?.faq },
@@ -83,7 +83,7 @@ export default function ContactEditor() {
 
         <AdminSectionCard title="SEO (Advanced)" defaultOpen={false}>
           <StaticSeoCard seoJson={p.seoJson} setSeoJson={p.setSeoJson} saveSeo={() => void p.saveSeo()} saving={p.saving}
-            pageUrl="https://seoexpertagency.com/contact" defaultTitle={c.hero.h1} defaultDescription={c.hero.subheadline} autoSchemas={['Organization']}
+            pageUrl="https://seoexpertagency.co.uk/contact" defaultTitle={c.hero.h1} defaultDescription={c.hero.subheadline} autoSchemas={['Organization']}
             subTitle={p.subTitle} setSubTitle={p.setSubTitle} metaKeyword={p.metaKeyword} setMetaKeyword={p.setMetaKeyword}
             h3Text={p.h3Text} setH3Text={p.setH3Text} shortDescription={p.shortDescription} setShortDescription={p.setShortDescription} />
         </AdminSectionCard>

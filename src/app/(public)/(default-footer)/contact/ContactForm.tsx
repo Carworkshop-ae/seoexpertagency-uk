@@ -298,8 +298,8 @@ export function ContactForm({
                   <Mail size={18} className="text-primary shrink-0" />
                   <div>
                     <p className="text-xs text-slate-400">Email Address</p>
-                    <a href="mailto:hello@seoexpertagency.com" className="text-sm font-bold text-white hover:text-primary transition-colors">
-                      hello@seoexpertagency.com
+                    <a href="mailto:hello@seoexpertagency.co.uk" className="text-sm font-bold text-white hover:text-primary transition-colors">
+                      hello@seoexpertagency.co.uk
                     </a>
                   </div>
                 </div>

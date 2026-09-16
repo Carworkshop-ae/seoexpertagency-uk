@@ -201,7 +201,7 @@ export default function StaticEditor() {
           <div className="bg-white rounded-lg shadow-card border border-[#E5E7EB] p-6 space-y-3">
             <h3 className="text-sm font-semibold text-[#1F2937] border-b border-[#E5E7EB] pb-3">Google Preview</h3>
             <div className="border border-[#E5E7EB] rounded-md p-3">
-              <p className="text-xs text-[#059669]">seoexpertagency.com{slug === 'home' ? '/' : `/${slug.replace(/-listing$/, '')}`}</p>
+              <p className="text-xs text-[#059669]">seoexpertagency.co.uk{slug === 'home' ? '/' : `/${slug.replace(/-listing$/, '')}`}</p>
               <p className="text-[#1A0DAB] text-base leading-tight truncate">{seoTitle || title || 'Page title'}</p>
               <p className="text-xs text-[#4D5156] mt-1 line-clamp-2">{seoDesc || 'Meta description preview…'}</p>
             </div>

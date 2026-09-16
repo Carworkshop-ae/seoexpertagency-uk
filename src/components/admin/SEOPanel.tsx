@@ -11,7 +11,7 @@ import { ROBOTS_OPTIONS, CHANGE_FREQ_OPTIONS, SCHEMA_TYPES, type SeoJson, type S
 interface SEOPanelProps {
   value: SeoJson
   onChange: (next: SeoJson) => void
-  pageUrl?: string            // e.g. https://seoexpertagency.com/services/technical-seo
+  pageUrl?: string            // e.g. https://seoexpertagency.co.uk/services/technical-seo
   defaultTitle?: string
   defaultDescription?: string
   autoSchemas?: string[]      // labels of schemas the page already emits
@@ -35,7 +35,7 @@ export function SEOPanel({ value, onChange, pageUrl, defaultTitle = '', defaultD
   const title = v.meta_title ?? ''
   const desc = v.meta_description ?? ''
   const robots = v.robots ?? 'index,follow'
-  const crumb = (pageUrl ?? 'https://seoexpertagency.com').replace(/^https?:\/\//, '').replace(/\//g, ' › ')
+  const crumb = (pageUrl ?? 'https://seoexpertagency.co.uk').replace(/^https?:\/\//, '').replace(/\//g, ' › ')
 
   const schemas = v.schemas ?? []
   const setSchemas = (s: SeoSchemaEntryT[]) => set('schemas', s)
@@ -90,7 +90,7 @@ export function SEOPanel({ value, onChange, pageUrl, defaultTitle = '', defaultD
             ? <img src={v.og_image} alt="" className="w-full h-40 object-cover bg-zinc-100" />
             : <div className="w-full h-40 bg-zinc-100 flex items-center justify-center text-xs text-zinc-400">OG image preview</div>}
           <div className="p-3">
-            <p className="text-[11px] uppercase text-zinc-400">seoexpertagency.com</p>
+            <p className="text-[11px] uppercase text-zinc-400">seoexpertagency.co.uk</p>
             <p className="text-sm font-semibold text-zinc-800 truncate">{v.og_title || title || defaultTitle || 'Title'}</p>
             <p className="text-xs text-zinc-500 line-clamp-2">{v.og_description || desc || defaultDescription || 'Description'}</p>
           </div>

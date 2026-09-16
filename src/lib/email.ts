@@ -1,7 +1,7 @@
 import { Resend } from 'resend'
 
-const FROM = 'SEO Expert Agency <noreply@seoexpertagency.com>'
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'hello@seoexpertagency.com'
+const FROM = 'SEO Expert Agency <noreply@seoexpertagency.co.uk>'
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL ?? 'hello@seoexpertagency.co.uk'
 
 function getResend(): Resend | null {
   if (!process.env.RESEND_API_KEY) return null

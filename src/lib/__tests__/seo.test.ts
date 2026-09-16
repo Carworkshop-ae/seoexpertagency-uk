@@ -13,7 +13,13 @@ describe('resolveSEO', () => {
     expect(seo.title).toBe('Default Title')
     expect(seo.canonical).toBe('https://example.test/page')
     expect(seo.robots).toBe('index,follow')
-    expect(seo.hreflang).toEqual([])
+    // Every page self-references its own market's hreflang plus x-default
+    // by default (see lib/market.ts) — the test env has no NEXT_PUBLIC_MARKET
+    // set, which resolves to AE.
+    expect(seo.hreflang).toEqual([
+      { lang: 'en-ae', url: 'https://example.test/page' },
+      { lang: 'x-default', url: 'https://example.test/page' },
+    ])
   })
 
   it('lets the admin overlay win over the defaults', () => {
@@ -52,8 +58,11 @@ describe('seoToMetadata', () => {
     expect(seoToMetadata(seo).alternates?.languages).toEqual({ 'en-AE': 'https://example.test/ae' })
   })
 
-  it('omits alternates.languages when no hreflang is set', () => {
-    expect(seoToMetadata(resolveSEO({}, defaults)).alternates?.languages).toBeUndefined()
+  it('defaults alternates.languages to a self-referencing hreflang + x-default', () => {
+    expect(seoToMetadata(resolveSEO({}, defaults)).alternates?.languages).toEqual({
+      'en-ae': 'https://example.test/page',
+      'x-default': 'https://example.test/page',
+    })
   })
 
   it('maps a noindex robots string onto the object form', () => {

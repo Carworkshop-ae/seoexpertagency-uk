@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
+import { getHreflangCode } from '@/lib/market'
 import './globals.css'
 
 const inter = Inter({
@@ -17,7 +18,7 @@ export const viewport: Viewport = {
 const rawUrl = process.env.NEXT_PUBLIC_SITE_URL
 const siteUrl = rawUrl && (rawUrl.startsWith('http://') || rawUrl.startsWith('https://'))
   ? rawUrl
-  : 'https://seoexpertagency.com'
+  : 'https://seoexpertagency.co.uk'
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
     images: ['/og-default.jpg'],
   },
   robots: { index: true, follow: true },
-  alternates: { canonical: siteUrl },
+  alternates: { canonical: siteUrl, languages: { [getHreflangCode()]: siteUrl, 'x-default': siteUrl } },
   manifest: '/manifest.webmanifest',
   icons: {
     icon: [

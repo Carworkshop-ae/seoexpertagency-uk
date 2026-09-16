@@ -59,7 +59,7 @@ export default function AdminLoginPage() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <Input label="Email" name="email" type="email" required autoComplete="email" placeholder="admin@seoexpertagency.com" />
+            <Input label="Email" name="email" type="email" required autoComplete="email" placeholder="admin@seoexpertagency.co.uk" />
             <Input label="Password" name="password" type="password" required autoComplete="current-password" placeholder="••••••••" />
             <Button type="submit" variant="primary" fullWidth loading={loading}>
               Sign In

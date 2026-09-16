@@ -21,6 +21,7 @@ import { CustomSchemas } from '@/components/seo/CustomSchemas'
 import { sanitizeHTML } from '@/lib/sanitize'
 import type { FAQItem, BlogPost } from '@/types'
 import type { SeoJson } from '@/lib/schemas/seo'
+import { getHreflangCode } from '@/lib/market'
 
 // A freeform "general" SEO landing page. Its slug isn't nested under any fixed
 // prefix, so this catch-all only ever fires for a first segment that doesn't
@@ -59,7 +60,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const page = await getPage(slug.join('/'))
   if (!page) return { title: 'Not Found' }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.co.uk'
   const url = `${siteUrl}/${page.slug}`
   const title = page.seo_title || `${page.headline} | SEO Expert Agency`
   const description = page.seo_description || page.subheadline || ''
@@ -68,7 +69,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title,
     description,
     keywords: page.meta_keyword || undefined,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: url,
+      languages: { [getHreflangCode()]: url, 'x-default': url },
+    },
     openGraph: { title, description, url, type: 'website' },
   }
 }
@@ -80,7 +84,7 @@ export default async function SeoPage({ params }: PageProps) {
   const page = await getPage(slug.join('/'))
   if (!page) notFound()
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.co.uk'
   const pageUrl = `${siteUrl}/${page.slug}`
   const faqs = (page.faq_json ?? []) as unknown as FAQItem[]
   const whyChooseUsItems = (page.why_choose_us_json ?? []) as unknown as Array<{ title: string; description: string }>

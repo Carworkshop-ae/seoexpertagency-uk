@@ -72,7 +72,7 @@ export function ListingPageEditor({ slug, title, viewHref, defaults }: ListingPa
 
         <AdminSectionCard title="SEO (Advanced)" defaultOpen={false}>
           <StaticSeoCard seoJson={p.seoJson} setSeoJson={p.setSeoJson} saveSeo={() => void p.saveSeo()} saving={p.saving}
-            pageUrl={`https://seoexpertagency.com${viewHref}`} defaultTitle={c.hero.h1} defaultDescription={c.hero.subtitle} autoSchemas={['CollectionPage', 'BreadcrumbList']}
+            pageUrl={`https://seoexpertagency.co.uk${viewHref}`} defaultTitle={c.hero.h1} defaultDescription={c.hero.subtitle} autoSchemas={['CollectionPage', 'BreadcrumbList']}
             subTitle={p.subTitle} setSubTitle={p.setSubTitle} metaKeyword={p.metaKeyword} setMetaKeyword={p.setMetaKeyword}
             h3Text={p.h3Text} setH3Text={p.setH3Text} shortDescription={p.shortDescription} setShortDescription={p.setShortDescription} />
         </AdminSectionCard>

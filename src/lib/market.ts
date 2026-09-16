@@ -1,7 +1,7 @@
 // One codebase, three deployments — each domain serves a different market:
 //
 //   seoexpertagency.com  → global. SEO pages carry NO country or state.
-//   seoexpertagency.uk   → United Kingdom. Country is fixed to UK; the State
+//   seoexpertagency.co.uk → United Kingdom. Country is fixed to UK; the State
 //                          dropdown lists UK locations.
 //   seoexpertagency.ae   → United Arab Emirates. Country fixed to UAE; the
 //                          State dropdown lists the emirates.
@@ -35,6 +35,19 @@ const MARKETS: Record<MarketCode, Market> = {
   AE: { code: 'AE', countryCode: 'AE', countryName: 'United Arab Emirates', hasGeo: true },
   GB: { code: 'GB', countryCode: 'GB', countryName: 'United Kingdom', hasGeo: true },
   XX: { code: 'XX', countryCode: 'XX', countryName: 'Global / International', hasGeo: false },
+}
+
+// hreflang codes for each market's single language/region — used as the
+// self-referencing hreflang tag every page emits by default (see resolveSEO
+// in lib/seo.ts). XX (the .com global build) targets en-us per client spec.
+const HREFLANG_CODES: Record<MarketCode, string> = {
+  AE: 'en-ae',
+  GB: 'en-GB',
+  XX: 'en-us',
+}
+
+export function getHreflangCode(): string {
+  return HREFLANG_CODES[getMarket().code]
 }
 
 function isMarketCode(value: string): value is MarketCode {

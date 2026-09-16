@@ -76,7 +76,7 @@ export default function FaqEditor() {
 
         <AdminSectionCard title="SEO (Advanced)" defaultOpen={false}>
           <StaticSeoCard seoJson={p.seoJson} setSeoJson={p.setSeoJson} saveSeo={() => void p.saveSeo()} saving={p.saving}
-            pageUrl="https://seoexpertagency.com/faq" defaultTitle={c.hero.h1} defaultDescription={c.hero.subheadline} autoSchemas={['FAQPage', 'BreadcrumbList']}
+            pageUrl="https://seoexpertagency.co.uk/faq" defaultTitle={c.hero.h1} defaultDescription={c.hero.subheadline} autoSchemas={['FAQPage', 'BreadcrumbList']}
             subTitle={p.subTitle} setSubTitle={p.setSubTitle} metaKeyword={p.metaKeyword} setMetaKeyword={p.setMetaKeyword}
             h3Text={p.h3Text} setH3Text={p.setH3Text} shortDescription={p.shortDescription} setShortDescription={p.setShortDescription} />
         </AdminSectionCard>

@@ -168,7 +168,7 @@ export const PRIVACY_DEFAULTS: PolicyContent = {
 <h2>4. Data Confidentiality &amp; Non-Disclosure</h2>
 <p>We strictly enforce non-disclosure and confidentiality standards. We do not sell, rent, or trade your personal or business data to third-party advertisers or brokers.</p>
 <h2>5. Your Rights &amp; Contact</h2>
-<p>You have the right to request access to, correction of, or deletion of your personal data stored in our systems. To submit a data request, please contact our privacy compliance team at <a href="mailto:privacy@seoexpertagency.com">privacy@seoexpertagency.com</a>.</p>`,
+<p>You have the right to request access to, correction of, or deletion of your personal data stored in our systems. To submit a data request, please contact our privacy compliance team at <a href="mailto:privacy@seoexpertagency.co.uk">privacy@seoexpertagency.co.uk</a>.</p>`,
 }
 
 export const TERMS_DEFAULTS: PolicyContent = {

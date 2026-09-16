@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import type { SeoJson, SeoSchemaEntryT } from '@/lib/schemas/seo'
+import { getHreflangCode } from '@/lib/market'
 
 export interface SeoDefaults {
   title: string
@@ -26,10 +27,11 @@ export interface ResolvedSEO {
 // Merge the admin seo_json overlay with auto-generated defaults.
 export function resolveSEO(seoJson: unknown, defaults: SeoDefaults): ResolvedSEO {
   const s = (seoJson ?? {}) as SeoJson
+  const canonical = s.canonical || defaults.url
   return {
     title: s.meta_title || defaults.title,
     description: s.meta_description || defaults.description,
-    canonical: s.canonical || defaults.url,
+    canonical,
     robots: s.robots || 'index,follow',
     ogTitle: s.og_title || s.meta_title || defaults.title,
     ogDescription: s.og_description || s.meta_description || defaults.description,
@@ -38,7 +40,13 @@ export function resolveSEO(seoJson: unknown, defaults: SeoDefaults): ResolvedSEO
     focusKeyword: s.focus_keyword || null,
     sitemapPriority: s.sitemap_priority ?? 0.7,
     changeFreq: s.change_freq || 'weekly',
-    hreflang: s.hreflang ?? [],
+    // Each domain is a single-market, single-language site, so every page
+    // self-references its own market's hreflang plus x-default by default.
+    // Admin-set hreflang (e.g. for a page that intentionally targets another
+    // market's URL) still wins.
+    hreflang: s.hreflang && s.hreflang.length > 0
+      ? s.hreflang
+      : [{ lang: getHreflangCode(), url: canonical }, { lang: 'x-default', url: canonical }],
   }
 }
 

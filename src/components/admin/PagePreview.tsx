@@ -14,7 +14,7 @@ export function PagePreview({ brandName, modelName, serviceName, locationName, m
   const h1Parts = [brandName, modelName, serviceName, locationName ? `in ${locationName}` : 'in UAE'].filter(Boolean)
   const displayTitle = metaTitle ?? h1Parts.join(' ')
   const displayDesc = metaDescription ?? `Expert ${h1Parts.slice(0, -1).join(' ')} service. Certified technicians, transparent pricing.`
-  const displayUrl = url ?? 'https://seoexpertagency.com/services/...'
+  const displayUrl = url ?? 'https://seoexpertagency.co.uk/services/...'
 
   return (
     <div className="border border-[#E5E7EB] rounded-lg p-4 bg-white">

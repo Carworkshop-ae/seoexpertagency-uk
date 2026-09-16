@@ -20,8 +20,8 @@ function checkOrigin(req: NextRequest): boolean {
   })()
 
   const allowed = new Set([
-    'https://seoexpertagency.com',
-    'https://www.seoexpertagency.com',
+    'https://seoexpertagency.co.uk',
+    'https://www.seoexpertagency.co.uk',
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     ...(siteOrigin ? [siteOrigin] : []),
