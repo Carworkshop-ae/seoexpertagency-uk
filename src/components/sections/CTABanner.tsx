@@ -1,18 +1,20 @@
-import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { ArrowRight, Phone, Sparkles } from 'lucide-react'
+import { EditModeLink } from '@/components/inline-edit/EditModeLink'
 
 interface CTABannerProps {
+  badge?: ReactNode
   title?: ReactNode
   subtitle?: ReactNode
-  ctaLabel?: string
+  ctaLabel?: ReactNode
   ctaHref?: string
-  secondaryLabel?: string
+  secondaryLabel?: ReactNode
   secondaryHref?: string
   bgColor?: string
 }
 
 export function CTABanner({
+  badge = 'Zero Obligation · Custom Strategy',
   title = 'Ready to Grow Your Search Visibility?',
   subtitle = 'Schedule a 30-minute discovery call with our senior SEO strategists and receive a free comprehensive technical & keyword opportunity audit.',
   ctaLabel = 'Get Your Free SEO Consultation',
@@ -36,7 +38,7 @@ export function CTABanner({
         <div className="relative max-w-3xl mx-auto">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-blue-100 text-xs font-bold uppercase tracking-wider mb-4 backdrop-blur-sm">
             <Sparkles size={13} className="text-white" />
-            Zero Obligation · Custom Strategy
+            {badge}
           </span>
 
           <h2 id="cta-heading" className="display-tight text-balance text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
@@ -48,21 +50,21 @@ export function CTABanner({
           </p>
 
           <div className="flex flex-wrap justify-center items-center gap-3.5 mt-8">
-            <Link
+            <EditModeLink
               href={ctaHref}
               className="group inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl bg-white text-primary hover:bg-slate-50 font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all text-xs sm:text-sm"
             >
               {ctaLabel}
               <ArrowRight size={16} className="group-hover:translate-x-0.5 transition-transform" />
-            </Link>
+            </EditModeLink>
             {secondaryLabel && (
-              <a
+              <EditModeLink
                 href={secondaryHref}
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white/10 text-white font-semibold ring-1 ring-white/30 hover:bg-white/20 backdrop-blur transition-all text-xs sm:text-sm"
               >
                 <Phone size={15} />
                 {secondaryLabel}
-              </a>
+              </EditModeLink>
             )}
           </div>
         </div>

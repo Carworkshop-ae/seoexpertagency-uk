@@ -10,7 +10,7 @@ interface HeroSectionProps {
   ctaHref?: string
   secondaryLabel?: string
   secondaryHref?: string
-  badge?: string
+  badge?: React.ReactNode
   heroStats?: HeroStat[]
   rightSlot?: ReactNode
   /** Rendered inside the dark hero, above the badge. Detail routes pass

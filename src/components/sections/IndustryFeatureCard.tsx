@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import toast from 'react-hot-toast'
 import { X } from 'lucide-react'
 import { INDUSTRY_ICONS, INDUSTRY_ICON_MAP, DEFAULT_INDUSTRY_ICON } from '@/lib/industry-icons'
 import { EditableText } from '@/components/inline-edit/EditableText'
@@ -18,48 +16,29 @@ interface IndustryFeatureCardProps {
   }
 }
 
-async function patchIndustry(id: string, patch: Record<string, unknown>) {
-  const res = await fetch(`/api/admin/industries/${id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(patch),
-  })
-  if (!res.ok) throw new Error('Save failed')
-}
-
 export function IndustryFeatureCard({ industry }: IndustryFeatureCardProps) {
-  const router = useRouter()
-  const { isAdmin, editMode } = useAdminEdit()
+  const { isAdmin, editMode, cards } = useAdminEdit()
   const canEdit = isAdmin && editMode
-  const name = industry?.name || 'Industry'
-  const description = industry?.shortDescription || ''
-  const iconKey = industry?.icon || ''
-  const Icon = INDUSTRY_ICON_MAP[iconKey] || DEFAULT_INDUSTRY_ICON
   const id = industry?.id
+  const draft = id ? cards.patchFor('industries', id) : undefined
+  const name = (draft?.name as string | undefined) ?? (industry?.name || 'Industry')
+  const description = (draft?.short_description as string | undefined) ?? (industry?.shortDescription || '')
+  const iconKey = (draft?.icon as string | undefined) ?? (industry?.icon || '')
+  const Icon = INDUSTRY_ICON_MAP[iconKey] || DEFAULT_INDUSTRY_ICON
 
-  async function save(patch: Record<string, unknown>) {
+  // Edits are buffered (see AdminEditProvider) — nothing is saved or visible to
+  // visitors until "Done Editing".
+  function save(patch: Record<string, unknown>) {
     if (!id) return
-    try {
-      await patchIndustry(id, patch)
-      toast.success('Saved')
-      router.refresh()
-    } catch {
-      toast.error('Save failed — please try again')
-    }
+    cards.patch('industries', id, patch, `Edit ${name}`)
   }
 
-  async function handleDelete() {
+  function handleDelete() {
     if (!id) return
-    if (!window.confirm(`Delete "${name}"? This cannot be undone.`)) return
-    try {
-      const res = await fetch(`/api/admin/industries/${id}`, { method: 'DELETE' })
-      if (!res.ok) throw new Error('Delete failed')
-      toast.success('Industry deleted')
-      router.refresh()
-    } catch {
-      toast.error('Delete failed — please try again')
-    }
+    cards.remove('industries', id, `Delete ${name}`)
   }
+
+  if (id && cards.isRemoved('industries', id)) return null
 
   const iconTile = (
     <div className="w-12 h-12 rounded-xl bg-primary-50 ring-1 ring-primary-200/60 flex items-center justify-center mb-5">
@@ -72,7 +51,7 @@ export function IndustryFeatureCard({ industry }: IndustryFeatureCardProps) {
       {canEdit && id && (
         <button
           type="button"
-          onClick={() => void handleDelete()}
+          onClick={handleDelete}
           className="absolute top-3 right-3 w-6 h-6 rounded-full bg-slate-100 text-slate-400 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-colors"
           aria-label={`Delete ${name}`}
         >
@@ -81,7 +60,7 @@ export function IndustryFeatureCard({ industry }: IndustryFeatureCardProps) {
       )}
 
       {canEdit && id ? (
-        <IconPicker options={INDUSTRY_ICONS} value={iconKey} onSelect={v => void save({ icon: v })} trigger={iconTile} />
+        <IconPicker options={INDUSTRY_ICONS} value={iconKey} onSelect={v => save({ icon: v })} trigger={iconTile} />
       ) : (
         iconTile
       )}

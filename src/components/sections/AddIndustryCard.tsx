@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { Plus } from 'lucide-react'
 import { useAdminEdit } from '@/components/inline-edit/AdminEditProvider'
@@ -12,40 +11,45 @@ import { INDUSTRY_ICONS, INDUSTRY_ICON_MAP, DEFAULT_INDUSTRY_ICON } from '@/lib/
 // grid (homepage), visible only to a signed-in admin with edit mode on.
 // Posts straight to the existing industries CRUD route — no new backend needed.
 export function AddIndustryCard() {
-  const { isAdmin, editMode } = useAdminEdit()
+  const { isAdmin, editMode, cards } = useAdminEdit()
   const canEdit = isAdmin && editMode
-  const router = useRouter()
   const [adding, setAdding] = useState(false)
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [icon, setIcon] = useState(INDUSTRY_ICONS[0].value)
-  const [saving, setSaving] = useState(false)
   const Icon = INDUSTRY_ICON_MAP[icon] || DEFAULT_INDUSTRY_ICON
 
   if (!canEdit) return null
 
-  async function submit() {
+  // Buffered until "Done Editing": the new card shows here as unpublished and
+  // is only created (and made public) when the admin publishes their changes.
+  function submit() {
     if (!name.trim()) { toast.error('Industry name is required'); return }
-    setSaving(true)
-    try {
-      const res = await fetch('/api/admin/industries', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), short_description: description.trim() || null, icon, status: 'published' }),
-      })
-      if (!res.ok) throw new Error('Create failed')
-      toast.success('Industry added')
-      setName(''); setDescription(''); setIcon(INDUSTRY_ICONS[0].value); setAdding(false)
-      router.refresh()
-    } catch {
-      toast.error('Could not add industry — please try again')
-    } finally {
-      setSaving(false)
-    }
+    cards.create('industries', { name: name.trim(), short_description: description.trim() || null, icon, status: 'published' }, `Add ${name.trim()}`)
+    setName(''); setDescription(''); setIcon(INDUSTRY_ICONS[0].value); setAdding(false)
   }
 
+  const wrap = (node: React.ReactNode) => (
+    <>
+      {cards.pendingCreates('industries').map(c => {
+        const PIcon = INDUSTRY_ICON_MAP[String(c.body.icon)] || DEFAULT_INDUSTRY_ICON
+        return (
+          <div key={c.tempId} className="flex flex-col p-6 sm:p-7 rounded-2xl bg-white border-2 border-dashed border-amber-400/70">
+            <div className="w-12 h-12 rounded-xl bg-primary-50 ring-1 ring-primary-200/60 flex items-center justify-center mb-5">
+              <PIcon className="w-6 h-6 text-primary" strokeWidth={1.8} />
+            </div>
+            <h3 className="text-base sm:text-lg font-bold text-dark mb-2">{String(c.body.name)}</h3>
+            <p className="text-xs sm:text-sm text-slate-600 line-clamp-3 leading-relaxed">{String(c.body.short_description ?? '')}</p>
+            <span className="mt-auto pt-3 text-[11px] font-bold text-amber-600 uppercase tracking-wider">Unpublished — publishes on Done Editing</span>
+          </div>
+        )
+      })}
+      {node}
+    </>
+  )
+
   if (!adding) {
-    return (
+    return wrap(
       <button
         type="button"
         onClick={() => setAdding(true)}
@@ -57,7 +61,7 @@ export function AddIndustryCard() {
     )
   }
 
-  return (
+  return wrap(
     <div className="flex flex-col p-6 sm:p-7 rounded-2xl bg-white border-2 border-primary/40 gap-3">
       <IconPicker
         options={INDUSTRY_ICONS}
@@ -86,15 +90,13 @@ export function AddIndustryCard() {
       <div className="flex gap-2 mt-1">
         <button
           type="button"
-          disabled={saving}
-          onClick={() => void submit()}
+          onClick={submit}
           className="flex-1 px-3 py-2 rounded-lg bg-primary text-white text-xs font-bold disabled:opacity-60"
         >
-          {saving ? 'Saving…' : 'Save'}
+          Add
         </button>
         <button
           type="button"
-          disabled={saving}
           onClick={() => { setAdding(false); setName(''); setDescription(''); setIcon(INDUSTRY_ICONS[0].value) }}
           className="px-3 py-2 rounded-lg border border-slate-200 text-slate-600 text-xs font-bold"
         >

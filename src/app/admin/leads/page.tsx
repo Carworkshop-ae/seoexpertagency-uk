@@ -11,7 +11,8 @@ type LeadStatus = 'new' | 'contacted' | 'in_progress' | 'converted' | 'closed'
 interface Lead {
   id: string; name: string; phone: string; email: string | null; message: string | null
   source_url: string | null; status: LeadStatus; notes: string | null; created_at: string
-  services?: { name: string } | null; brands?: { name: string } | null
+  website_url?: string | null; service_name?: string | null
+  services?: { name: string } | null
 }
 
 const STATUSES: Array<{ value: LeadStatus; label: string }> = [
@@ -196,8 +197,8 @@ function LeadDetail({ lead, wa, onSaveNotes }: { lead: Lead; wa: string; onSaveN
   return (
     <div className="space-y-3">
       <div className="grid sm:grid-cols-2 gap-3 text-sm">
-        <p><span className="text-zinc-500">Service:</span> <span className="text-zinc-800">{lead.services?.name || '—'}</span></p>
-        <p><span className="text-zinc-500">Brand:</span> <span className="text-zinc-800">{lead.brands?.name || '—'}</span></p>
+        <p><span className="text-zinc-500">Service:</span> <span className="text-zinc-800">{lead.services?.name || lead.service_name || '—'}</span></p>
+        <p><span className="text-zinc-500">Website:</span> <span className="text-zinc-800">{lead.website_url || '—'}</span></p>
         <p><span className="text-zinc-500">Message:</span> <span className="text-zinc-800">{lead.message || '—'}</span></p>
         <p><span className="text-zinc-500">Source:</span> <span className="font-mono text-xs text-zinc-700">{lead.source_url || '—'}</span></p>
       </div>
