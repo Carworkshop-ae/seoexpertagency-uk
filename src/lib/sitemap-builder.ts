@@ -3,7 +3,7 @@ import { createServiceClient } from '@/lib/supabase/service'
 import { getProjects } from '@/lib/data/content'
 
 const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/^["']|["']$/g, '').trim()
-export const BASE_URL = rawSiteUrl && rawSiteUrl.startsWith('http') ? rawSiteUrl : 'https://seoexpertagency.co.uk'
+export const BASE_URL = rawSiteUrl && rawSiteUrl.startsWith('http') ? rawSiteUrl : 'https://seoexpertsagency.co.uk'
 export const MAX_SITEMAP_URLS = 10000
 
 export interface SitemapUrl {

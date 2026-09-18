@@ -25,7 +25,7 @@ export async function POST() {
     const apiKey = map.resend_api_key || process.env.RESEND_API_KEY || ''
     if (!apiKey) return NextResponse.json({ error: 'Resend API key not set' }, { status: 400 })
 
-    const fromEmail = map.resend_from_email || 'noreply@seoexpertagency.co.uk'
+    const fromEmail = map.resend_from_email || 'noreply@seoexpertsagency.co.uk'
     const fromName = map.resend_from_name || 'SEO Expert Agency'
 
     const resend = new Resend(apiKey)

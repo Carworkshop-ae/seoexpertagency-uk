@@ -60,7 +60,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const page = await getPage(slug.join('/'))
   if (!page) return { title: 'Not Found' }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.co.uk'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertsagency.co.uk'
   const url = `${siteUrl}/${page.slug}`
   const title = page.seo_title || `${page.headline} | SEO Expert Agency`
   const description = page.seo_description || page.subheadline || ''
@@ -84,7 +84,7 @@ export default async function SeoPage({ params }: PageProps) {
   const page = await getPage(slug.join('/'))
   if (!page) notFound()
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.co.uk'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertsagency.co.uk'
   const pageUrl = `${siteUrl}/${page.slug}`
   const faqs = (page.faq_json ?? []) as unknown as FAQItem[]
   const whyChooseUsItems = (page.why_choose_us_json ?? []) as unknown as Array<{ title: string; description: string }>

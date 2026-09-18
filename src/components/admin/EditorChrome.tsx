@@ -81,7 +81,7 @@ export function SeoCard({ slug, title, description, onTitle, onDescription }: { 
           <AdminInput label="Meta Title" value={title} maxCount={60} onChange={e => onTitle(e.target.value)} />
           <AdminTextarea label="Meta Description" value={description} rows={3} maxCount={160} onChange={e => onDescription(e.target.value)} />
           <div className="border border-zinc-200 rounded-lg p-3 bg-zinc-50">
-            <p className="text-xs text-[#006621] truncate">🌐 seoexpertagency.co.uk › {slug.replace(/\//g, ' › ')}</p>
+            <p className="text-xs text-[#006621] truncate">🌐 seoexpertsagency.co.uk › {slug.replace(/\//g, ' › ')}</p>
             <p className="text-[#1A0DAB] text-sm font-medium truncate mt-0.5">{title || 'Page title preview'}</p>
             <p className="text-zinc-600 text-xs line-clamp-2 mt-0.5">{description || 'Meta description preview shows here as you type.'}</p>
           </div>

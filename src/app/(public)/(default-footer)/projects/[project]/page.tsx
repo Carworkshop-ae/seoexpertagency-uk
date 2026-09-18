@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
     return { title: 'Case Study Not Found | SEO Expert Agency' }
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.co.uk'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertsagency.co.uk'
   const url = `${siteUrl}/projects/${project.slug}`
 
   return {
@@ -57,7 +57,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
   if (!project) notFound()
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.co.uk'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertsagency.co.uk'
   const projectUrl = `${siteUrl}/projects/${project.slug}`
 
   const seoJson = await getProjectSeo(slug)

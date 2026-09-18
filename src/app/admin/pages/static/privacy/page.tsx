@@ -122,7 +122,7 @@ function PolicyTab({ slug, title, viewHref }: { slug: string; title: string; vie
           <summary className="cursor-pointer px-4 py-2.5 text-sm font-semibold text-zinc-800">SEO (Advanced)</summary>
           <div className="px-4 pb-4 pt-2 border-t border-zinc-100">
             <EntitySeoTab endpoint={`/api/admin/pages/static/${slug}/seo`} initial={seoJson}
-              pageUrl={`https://seoexpertagency.co.uk${viewHref}`} defaultTitle={c.h1} autoSchemas={['BreadcrumbList']} />
+              pageUrl={`https://seoexpertsagency.co.uk${viewHref}`} defaultTitle={c.h1} autoSchemas={['BreadcrumbList']} />
           </div>
         </details>
       </div>

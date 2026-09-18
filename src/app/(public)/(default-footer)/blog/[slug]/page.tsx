@@ -76,7 +76,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     .maybeSingle()
 
   const fallback = FALLBACK_POST_CONTENT[slug]
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.co.uk'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertsagency.co.uk'
 
   if (!post && !fallback) return { title: 'Post Not Found | SEO Expert Agency' }
 
@@ -128,7 +128,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   const htmlContent = post?.content ? sanitizeHTML(post.content) : (fallback?.content || '')
   const publishedAt = post?.published_at ?? fallback?.date ?? new Date().toISOString()
   const featuredImage = post?.image_webp_url || post?.featured_image
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertagency.co.uk'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://seoexpertsagency.co.uk'
 
   const articleSchema = {
     '@context': 'https://schema.org',

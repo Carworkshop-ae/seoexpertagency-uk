@@ -1,5 +1,5 @@
 const rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/^["']|["']$/g, '').trim()
-const DEFAULT_SITE_URL = rawSiteUrl && rawSiteUrl.startsWith('http') ? rawSiteUrl : 'https://seoexpertagency.co.uk'
+const DEFAULT_SITE_URL = rawSiteUrl && rawSiteUrl.startsWith('http') ? rawSiteUrl : 'https://seoexpertsagency.co.uk'
 const SITE_NAME = 'SEO Expert Agency'
 const PHONE = '+971 4 800 736'
 

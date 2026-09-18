@@ -212,7 +212,7 @@ function GeneralTab({ settings, set, saveKeys, onSave }: { settings: SiteSetting
             <Field label="Primary Phone" value={settings.footer_business_phone} onChange={v => set('footer_business_phone', v)} placeholder="+97150…" />
             <Field label="Secondary Phone (optional)" value={settings.footer_business_phone2} onChange={v => set('footer_business_phone2', v)} />
           </div>
-          <Field label="Business Email" value={settings.footer_business_email} onChange={v => set('footer_business_email', v)} placeholder="info@seoexpertagency.co.uk" />
+          <Field label="Business Email" value={settings.footer_business_email} onChange={v => set('footer_business_email', v)} placeholder="info@seoexpertsagency.co.uk" />
           <AdminButton variant="orange" onClick={() => saveKeys(['footer_business_address', 'footer_business_phone', 'footer_business_phone2', 'footer_business_email'])}>Save Business Info</AdminButton>
         </div>
       </AdminCard>
@@ -367,7 +367,7 @@ function EmailTab({ settings, set, onSave, onTest }: { settings: SiteSettings; s
             <>
               <Field label="Resend API Key" type="password" value={settings.resend_api_key} onChange={v => set('resend_api_key', v)} placeholder="re_xxxxxxxxxxxx" helper="Stored securely — shown masked after saving" />
               <div className="grid grid-cols-2 gap-3">
-                <Field label="From Email" value={settings.resend_from_email} onChange={v => set('resend_from_email', v)} placeholder="noreply@seoexpertagency.co.uk" />
+                <Field label="From Email" value={settings.resend_from_email} onChange={v => set('resend_from_email', v)} placeholder="noreply@seoexpertsagency.co.uk" />
                 <Field label="From Name" value={settings.resend_from_name} onChange={v => set('resend_from_name', v)} placeholder="SEO Expert Agency" />
               </div>
             </>

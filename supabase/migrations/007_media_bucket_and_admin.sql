@@ -21,13 +21,13 @@ ON CONFLICT (id) DO UPDATE
 INSERT INTO public.users (id, email, full_name, role, is_active)
 SELECT id, email, 'Admin', 'super_admin', true
 FROM auth.users
-WHERE email = 'admin@seoexpertagency.co.uk'
+WHERE email = 'admin@seoexpertsagency.co.uk'
 ON CONFLICT (id) DO UPDATE
   SET role = 'super_admin', is_active = true;
 
 DO $$
 BEGIN
-  IF NOT EXISTS (SELECT 1 FROM public.users WHERE email = 'admin@seoexpertagency.co.uk') THEN
-    RAISE NOTICE 'No auth user for admin@seoexpertagency.co.uk yet - create it, then re-run the admin INSERT.';
+  IF NOT EXISTS (SELECT 1 FROM public.users WHERE email = 'admin@seoexpertsagency.co.uk') THEN
+    RAISE NOTICE 'No auth user for admin@seoexpertsagency.co.uk yet - create it, then re-run the admin INSERT.';
   END IF;
 END $$;

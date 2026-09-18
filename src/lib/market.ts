@@ -1,7 +1,7 @@
 // One codebase, three deployments — each domain serves a different market:
 //
 //   seoexpertagency.com  → global. SEO pages carry NO country or state.
-//   seoexpertagency.co.uk → United Kingdom. Country is fixed to UK; the State
+//   seoexpertsagency.co.uk → United Kingdom. Country is fixed to UK; the State
 //                          dropdown lists UK locations.
 //   seoexpertagency.ae   → United Arab Emirates. Country fixed to UAE; the
 //                          State dropdown lists the emirates.

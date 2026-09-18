@@ -40,7 +40,7 @@ export function BlogEditor({ post, users = [] }: BlogEditorProps) {
         <EntitySeoTab
           endpoint={`/api/admin/blog/${post.id}/seo`}
           initial={(post.seo_json ?? {}) as SeoJson}
-          pageUrl={`https://seoexpertagency.co.uk/blog/${post.slug}`}
+          pageUrl={`https://seoexpertsagency.co.uk/blog/${post.slug}`}
           defaultTitle={`${post.title} | SEO Expert Agency`}
           autoSchemas={['Article', 'BreadcrumbList']}
         />
@@ -137,7 +137,7 @@ export function BlogEditor({ post, users = [] }: BlogEditorProps) {
           <EntitySeoTab
             endpoint={`/api/admin/blog/${post.id}/seo`}
             initial={(post.seo_json ?? {}) as SeoJson}
-            pageUrl={`https://seoexpertagency.co.uk/blog/${post.slug}`}
+            pageUrl={`https://seoexpertsagency.co.uk/blog/${post.slug}`}
             defaultTitle={`${post.title} | SEO Expert Agency`}
             autoSchemas={['Article', 'BreadcrumbList']}
           />
