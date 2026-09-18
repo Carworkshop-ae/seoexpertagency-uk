@@ -37,6 +37,10 @@ async function published(table: 'services' | 'industries' | 'projects' | 'locati
       .select('*')
       .eq('status', 'published')
       .order('sort_order', { ascending: true })
+      // Rows created without an explicit position share sort_order 0; without a
+      // tie-break Postgres returns them in heap order, which shuffles after an UPDATE.
+      .order('created_at', { ascending: true })
+      .order('id', { ascending: true })
     return (data ?? []) as Row[]
   } catch {
     // A broken DB connection must not take the public site down — the static

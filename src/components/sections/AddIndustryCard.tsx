@@ -33,12 +33,15 @@ export function AddIndustryCard() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: name.trim(), short_description: description.trim() || null, icon, status: 'published' }),
       })
-      if (!res.ok) throw new Error('Create failed')
+      if (!res.ok) {
+        const body = await res.json().catch(() => null) as { error?: string; details?: Record<string, string[]> } | null
+        throw new Error((body?.details ? Object.values(body.details).flat()[0] : undefined) ?? body?.error ?? 'Create failed')
+      }
       toast.success('Industry added')
       setName(''); setDescription(''); setIcon(INDUSTRY_ICONS[0].value); setAdding(false)
       router.refresh()
-    } catch {
-      toast.error('Could not add industry — please try again')
+    } catch (err) {
+      toast.error(err instanceof Error && err.message !== 'Create failed' ? err.message : 'Could not add industry — please try again')
     } finally {
       setSaving(false)
     }

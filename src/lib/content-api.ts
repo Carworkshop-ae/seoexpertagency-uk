@@ -51,7 +51,7 @@ export function listHandler(r: ContentResource<z.ZodTypeAny, z.ZodTypeAny>) {
 
       const sp = req.nextUrl.searchParams
       const service = createServiceClient()
-      let query = service.from(r.table).select(r.listColumns).order('sort_order', { ascending: true })
+      let query = service.from(r.table).select(r.listColumns).order('sort_order', { ascending: true }).order('created_at', { ascending: true }).order('id', { ascending: true })
 
       const status = sp.get('status')
       if (status) query = query.eq('status', status as ContentStatus)
@@ -73,7 +73,8 @@ export function createHandler(r: ContentResource<z.ZodTypeAny, z.ZodTypeAny>) {
       const acting = await getActingUser()
       if (!acting) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-      const parsed = r.createSchema.safeParse(await req.json())
+      const rawBody = (await req.json()) as Row
+      const parsed = r.createSchema.safeParse(rawBody)
       if (!parsed.success) {
         return NextResponse.json({ error: 'Invalid data', details: parsed.error.flatten().fieldErrors }, { status: 400 })
       }
@@ -83,6 +84,18 @@ export function createHandler(r: ContentResource<z.ZodTypeAny, z.ZodTypeAny>) {
       if (!slug) return NextResponse.json({ error: 'A slug or title is required' }, { status: 400 })
 
       const service = createServiceClient()
+
+      // The schema defaults sort_order to 0, so every row created without an
+      // explicit position would tie at 0. Append new rows after the last one.
+      if (!('sort_order' in rawBody)) {
+        const { data: last } = await service
+          .from(r.table)
+          .select('sort_order')
+          .order('sort_order', { ascending: false })
+          .limit(1)
+          .maybeSingle()
+        payload.sort_order = ((last as { sort_order?: number } | null)?.sort_order ?? -1) + 1
+      }
       const { data, error } = await service
         .from(r.table)
         .insert({ ...payload, slug, ...(r.tracksCreator ? { created_by: acting.id } : {}) } as never)
