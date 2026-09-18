@@ -1,3 +1,5 @@
+import { EditableSetting } from '@/components/inline-edit/EditableSetting'
+import { EditModeLink } from '@/components/inline-edit/EditModeLink'
 import Link from 'next/link'
 import { Sparkles, Mail, Phone, MapPin, ArrowRight } from 'lucide-react'
 import type { SiteSettings } from '@/types/settings'
@@ -38,7 +40,11 @@ export async function Footer({ settings }: FooterProps) {
               </span>
             </Link>
             <p className="text-slate-400 text-sm max-w-md leading-relaxed">
-              {settings.footer_tagline || 'Leading data-driven search engine optimization agency delivering predictable organic revenue growth and high-intent customer acquisition.'}
+              <EditableSetting
+                settingKey="footer_tagline"
+                multiline
+                value={settings.footer_tagline || 'Leading data-driven search engine optimization agency delivering predictable organic revenue growth and high-intent customer acquisition.'}
+              />
             </p>
           </div>
 
@@ -83,15 +89,15 @@ export async function Footer({ settings }: FooterProps) {
             <div className="space-y-3 text-slate-400">
               <div className="flex items-start gap-2">
                 <MapPin size={15} className="text-primary shrink-0 mt-0.5" />
-                <span className="leading-relaxed">{address}</span>
+                <EditableSetting settingKey="footer_business_address" className="leading-relaxed" value={address} />
               </div>
               <div className="flex items-center gap-2">
                 <Phone size={15} className="text-primary shrink-0" />
-                <a href={`tel:${phone.replace(/[^0-9+]/g, '')}`} className="hover:text-white transition-colors">{phone}</a>
+                <EditModeLink href={`tel:${phone.replace(/[^0-9+]/g, '')}`} className="hover:text-white transition-colors"><EditableSetting settingKey="footer_business_phone" value={phone} /></EditModeLink>
               </div>
               <div className="flex items-center gap-2">
                 <Mail size={15} className="text-primary shrink-0" />
-                <a href={`mailto:${email}`} className="hover:text-white transition-colors">{email}</a>
+                <EditModeLink href={`mailto:${email}`} className="hover:text-white transition-colors"><EditableSetting settingKey="footer_business_email" value={email} /></EditModeLink>
               </div>
             </div>
           </div>

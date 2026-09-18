@@ -17,6 +17,7 @@ import { FinalCTASection } from '@/components/sections/FinalCTASection'
 import { Reveal } from '@/components/ui/Reveal'
 import { StaticPageEditProvider } from '@/components/inline-edit/StaticPageEditProvider'
 import { EditableText } from '@/components/inline-edit/EditableText'
+import { ListControls } from '@/components/inline-edit/ListControls'
 import { generateOrganizationSchema, organizationDetailsFromSettings } from '@/lib/page-engine/schema'
 import { getSettings } from '@/lib/hooks/useSettings'
 import { resolveSEO, seoToMetadata } from '@/lib/seo'
@@ -88,7 +89,7 @@ export default async function HomePage() {
       <HeroSection
         h1={<EditableText path="hero.h1" value={content.hero.h1} as="span" />}
         subtitle={<EditableText path="hero.subheadline" value={content.hero.subheadline} as="span" multiline />}
-        badge="RESULT-DRIVEN SEO AGENCY"
+        badge={<EditableText path="hero.badge" value={content.hero.badge} as="span" />}
         ctaLabel={content.hero.cta_primary_text}
         ctaHref={content.hero.cta_primary_link}
         secondaryLabel={content.hero.cta_secondary_text}
@@ -98,11 +99,12 @@ export default async function HomePage() {
 
       {/* 2. Trust Bar */}
       <TrustBar items={content.trust_bar.stats.map((s, i) => ({
-        icon: <span className="text-lg">{s.icon}</span>,
+        icon: <EditableText path={`trust_bar.stats.${i}.icon`} value={s.icon || '⭐'} as="span" className="text-lg" />,
         value: <EditableText path={`trust_bar.stats.${i}.value`} value={s.value} as="span" />,
         label: <EditableText path={`trust_bar.stats.${i}.label`} value={s.label} as="span" />,
         sublabel: s.sublabel ? <EditableText path={`trust_bar.stats.${i}.sublabel`} value={s.sublabel} as="span" /> : undefined,
       }))} />
+      <ListControls path="trust_bar.stats" noun="trust item" template={{ icon: '⭐', value: 'New highlight', label: 'Short label', sublabel: 'Supporting detail' }} />
 
       {/* 3. Core SEO Services */}
       <Reveal>
@@ -122,10 +124,13 @@ export default async function HomePage() {
       {/* 5. High-Impact CTA Banner */}
       <Reveal>
         <CTABanner
+          badge={<EditableText path="cta_banner.badge" value={content.cta_banner.badge} as="span" />}
           title={<EditableText path="cta_banner.headline" value={content.cta_banner.headline} as="span" />}
           subtitle={<EditableText path="cta_banner.subheadline" value={content.cta_banner.subheadline} as="span" multiline />}
-          ctaLabel={content.cta_banner.button_text}
+          ctaLabel={<EditableText path="cta_banner.button_text" value={content.cta_banner.button_text} as="span" />}
           ctaHref={content.cta_banner.button_link}
+          secondaryLabel={<EditableText path="cta_banner.secondary_text" value={content.cta_banner.secondary_text} as="span" />}
+          secondaryHref={content.cta_banner.secondary_link}
         />
       </Reveal>
 
@@ -149,11 +154,12 @@ export default async function HomePage() {
         <WhyChooseUs
           heading={<EditableText path="why_choose_us.heading" value={content.why_choose_us.heading} as="span" />}
           items={content.why_choose_us.items.map((it, i) => ({
-            icon: it.icon,
+            icon: <EditableText path={`why_choose_us.items.${i}.icon`} value={it.icon || '⭐'} as="span" />,
             title: <EditableText path={`why_choose_us.items.${i}.title`} value={it.title} as="span" />,
             description: <EditableText path={`why_choose_us.items.${i}.description`} value={it.description} as="span" multiline />,
           }))}
         />
+        <ListControls path="why_choose_us.items" noun="card" min={3} template={{ icon: '⭐', title: 'New advantage', description: 'Describe this advantage in a sentence or two.' }} />
       </Reveal>
 
       {/* 10. Client Testimonials */}
