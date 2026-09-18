@@ -142,7 +142,7 @@ export const CreateSeoPageSchema = z.object({
   // actually enforces the requirement on the two geo markets.
   location_id: getMarket().hasGeo
     ? z.string().uuid('Select a state')
-    : z.string().uuid().nullable().optional(),
+    : z.preprocess(v => (v === '' ? null : v), z.string().uuid().nullable().optional()),
   headline: z.string().max(300).trim().optional().nullable(),
   subheadline: z.string().max(500).trim().optional().nullable(),
   overview: z.string().max(20000).optional().nullable(),
