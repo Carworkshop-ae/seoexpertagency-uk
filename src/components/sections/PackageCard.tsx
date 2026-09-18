@@ -1,23 +1,13 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import toast from 'react-hot-toast'
 import { Check, Sparkles, ArrowRight } from 'lucide-react'
 import type { SEOPackageData } from '@/lib/data/agency-data'
 import { EditableText } from '@/components/inline-edit/EditableText'
+import { useAdminEdit } from '@/components/inline-edit/AdminEditProvider'
 
 interface PackageCardProps {
   pkg: SEOPackageData
-}
-
-async function patchPackage(id: string, patch: Record<string, unknown>) {
-  const res = await fetch(`/api/admin/packages/${id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(patch),
-  })
-  if (!res.ok) throw new Error('Save failed')
 }
 
 // Inline-editable version of the pricing card — name, price, description and
@@ -25,22 +15,22 @@ async function patchPackage(id: string, patch: Record<string, unknown>) {
 // /api/admin/packages/[id]). Tiers are fixed (no add/remove-tier UI here),
 // matching the fixed-3-rows database constraint from migration 006.
 export function PackageCard({ pkg }: PackageCardProps) {
-  const router = useRouter()
+  const { cards } = useAdminEdit()
   const isFeatured = pkg.isPopular
+  const draft = cards.patchFor('packages', pkg.id)
+  const name = (draft?.name as string | undefined) ?? pkg.name
+  const price = (draft?.price as string | undefined) ?? pkg.price
+  const description = (draft?.description as string | undefined) ?? pkg.description
+  const features = (draft?.features_json as string[] | undefined) ?? pkg.features
 
-  async function save(patch: Record<string, unknown>) {
-    try {
-      await patchPackage(pkg.id, patch)
-      toast.success('Saved')
-      router.refresh()
-    } catch {
-      toast.error('Save failed — please try again')
-    }
+  // Buffered until "Done Editing" (see AdminEditProvider).
+  function save(patch: Record<string, unknown>) {
+    cards.patch('packages', pkg.id, patch, `Edit ${name}`)
   }
 
   function saveFeature(index: number, value: string) {
-    const next = pkg.features.map((f, i) => (i === index ? value : f))
-    void save({ features_json: next })
+    const next = features.map((f, i) => (i === index ? value : f))
+    save({ features_json: next })
   }
 
   return (
@@ -62,7 +52,7 @@ export function PackageCard({ pkg }: PackageCardProps) {
       <div>
         <div className="flex items-center justify-between mb-4">
           <h3 className={['text-base font-extrabold tracking-wider uppercase', isFeatured ? 'text-white' : 'text-slate-900'].join(' ')}>
-            <EditableText value={pkg.name} onSave={v => save({ name: v })} as="span" />
+            <EditableText value={name} onSave={v => save({ name: v })} as="span" />
           </h3>
           <span className={['text-[11px] font-bold px-2.5 py-0.5 rounded-full', isFeatured ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'].join(' ')}>
             {pkg.tier.toUpperCase()} TIER
@@ -71,7 +61,7 @@ export function PackageCard({ pkg }: PackageCardProps) {
 
         <div className="mb-4">
           <span className={['text-3xl sm:text-4xl font-extrabold tracking-tight', isFeatured ? 'text-white' : 'text-dark'].join(' ')}>
-            <EditableText value={pkg.price} onSave={v => save({ price: v })} as="span" />
+            <EditableText value={price} onSave={v => save({ price: v })} as="span" />
           </span>
           <span className={['text-xs ml-2 font-medium', isFeatured ? 'text-blue-100' : 'text-slate-500'].join(' ')}>
             /{pkg.billingPeriod}
@@ -79,14 +69,14 @@ export function PackageCard({ pkg }: PackageCardProps) {
         </div>
 
         <p className={['text-xs sm:text-sm leading-relaxed mb-6', isFeatured ? 'text-blue-50' : 'text-slate-600'].join(' ')}>
-          <EditableText value={pkg.description} onSave={v => save({ description: v })} as="span" multiline />
+          <EditableText value={description} onSave={v => save({ description: v })} as="span" multiline />
         </p>
 
         <div className={['pt-6 border-t mb-6 space-y-3 text-xs sm:text-sm', isFeatured ? 'border-white/20 text-white' : 'border-slate-100 text-slate-700'].join(' ')}>
           <p className={['text-xs font-bold uppercase tracking-wider mb-3', isFeatured ? 'text-blue-200' : 'text-slate-400'].join(' ')}>
             What&apos;s Included:
           </p>
-          {pkg.features.map((feature, idx) => (
+          {features.map((feature, idx) => (
             <div key={idx} className="flex items-start gap-2.5">
               <div className={['shrink-0 w-4 h-4 rounded-full flex items-center justify-center mt-0.5', isFeatured ? 'bg-white text-primary' : 'bg-primary-50 text-primary'].join(' ')}>
                 <Check size={11} strokeWidth={3} />

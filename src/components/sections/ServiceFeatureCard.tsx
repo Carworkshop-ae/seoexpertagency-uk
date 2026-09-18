@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import toast from 'react-hot-toast'
 import { X } from 'lucide-react'
 import { SERVICE_ICONS, SERVICE_ICON_MAP, DEFAULT_SERVICE_ICON } from '@/lib/service-icons'
 import { EditableText } from '@/components/inline-edit/EditableText'
@@ -18,48 +16,29 @@ interface ServiceFeatureCardProps {
   }
 }
 
-async function patchService(id: string, patch: Record<string, unknown>) {
-  const res = await fetch(`/api/admin/services/${id}`, {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(patch),
-  })
-  if (!res.ok) throw new Error('Save failed')
-}
-
 export function ServiceFeatureCard({ service }: ServiceFeatureCardProps) {
-  const router = useRouter()
-  const { isAdmin, editMode } = useAdminEdit()
+  const { isAdmin, editMode, cards } = useAdminEdit()
   const canEdit = isAdmin && editMode
-  const name = service?.name || 'SEO Service'
-  const description = service?.shortDescription || ''
-  const iconKey = service?.icon || 'search'
-  const Icon = SERVICE_ICON_MAP[iconKey] || DEFAULT_SERVICE_ICON
   const id = service?.id
+  const draft = id ? cards.patchFor('services', id) : undefined
+  const name = (draft?.name as string | undefined) ?? (service?.name || 'SEO Service')
+  const description = (draft?.short_description as string | undefined) ?? (service?.shortDescription || '')
+  const iconKey = (draft?.icon as string | undefined) ?? (service?.icon || 'search')
+  const Icon = SERVICE_ICON_MAP[iconKey] || DEFAULT_SERVICE_ICON
 
-  async function save(patch: Record<string, unknown>) {
+  // Edits are buffered (see AdminEditProvider) — nothing is saved or visible to
+  // visitors until "Done Editing".
+  function save(patch: Record<string, unknown>) {
     if (!id) return
-    try {
-      await patchService(id, patch)
-      toast.success('Saved')
-      router.refresh()
-    } catch {
-      toast.error('Save failed — please try again')
-    }
+    cards.patch('services', id, patch, `Edit ${name}`)
   }
 
-  async function handleDelete() {
+  function handleDelete() {
     if (!id) return
-    if (!window.confirm(`Delete "${name}"? This cannot be undone.`)) return
-    try {
-      const res = await fetch(`/api/admin/services/${id}`, { method: 'DELETE' })
-      if (!res.ok) throw new Error('Delete failed')
-      toast.success('Service deleted')
-      router.refresh()
-    } catch {
-      toast.error('Delete failed — please try again')
-    }
+    cards.remove('services', id, `Delete ${name}`)
   }
+
+  if (id && cards.isRemoved('services', id)) return null
 
   const iconTile = (
     <div className="w-12 h-12 rounded-xl bg-primary-50 ring-1 ring-primary-200/60 flex items-center justify-center mb-5">
@@ -72,7 +51,7 @@ export function ServiceFeatureCard({ service }: ServiceFeatureCardProps) {
       {canEdit && id && (
         <button
           type="button"
-          onClick={() => void handleDelete()}
+          onClick={handleDelete}
           className="absolute top-3 right-3 w-6 h-6 rounded-full bg-slate-100 text-slate-400 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-colors"
           aria-label={`Delete ${name}`}
         >
@@ -81,7 +60,7 @@ export function ServiceFeatureCard({ service }: ServiceFeatureCardProps) {
       )}
 
       {canEdit && id ? (
-        <IconPicker options={SERVICE_ICONS} value={iconKey} onSelect={v => void save({ icon: v })} trigger={iconTile} />
+        <IconPicker options={SERVICE_ICONS} value={iconKey} onSelect={v => save({ icon: v })} trigger={iconTile} />
       ) : (
         iconTile
       )}

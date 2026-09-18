@@ -1,8 +1,6 @@
 'use client'
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import toast from 'react-hot-toast'
 import { getByPath, setByPath } from '@/lib/inline-edit/path'
 import { useAdminEdit } from './AdminEditProvider'
 
@@ -48,14 +46,17 @@ interface StaticPageEditProviderProps {
 
 // Nests under the site-wide AdminEditProvider (which owns admin detection and
 // the edit-mode toggle) and adds this one page's content_json read-modify-
-// write cycle against PUT /api/admin/pages/static/[slug], so nested
+// write cycle against PUT /api/admin/pages/static/[slug] (run once, on "Done Editing"), so nested
 // EditableText/EditableRichText components can stay simple path+value leaves.
 export function StaticPageEditProvider({ slug, initialContent, children }: StaticPageEditProviderProps) {
-  const { isAdmin, editMode } = useAdminEdit()
-  const router = useRouter()
+  const { isAdmin, editMode, record, registerCommitter } = useAdminEdit()
   const [content, setContent] = useState(initialContent)
   const [row, setRow] = useState<StaticPageRow | null>(null)
-  const [saving, setSaving] = useState(false)
+  // What the server currently has — the committer skips the PUT when the
+  // buffered content is identical to it (e.g. after Discard).
+  const savedRef = useRef<object>(initialContent)
+  const contentRef = useRef<object>(initialContent)
+  const rowRef = useRef<StaticPageRow | null>(null)
   const fetchingRow = useRef(false)
 
   useEffect(() => {
@@ -70,45 +71,54 @@ export function StaticPageEditProvider({ slug, initialContent, children }: Stati
     return () => { cancelled = true }
   }, [isAdmin, editMode, row, slug])
 
+  useEffect(() => { rowRef.current = row }, [row])
+
   const getValue = useCallback((path: string) => getByPath(content, path), [content])
   const canEdit = isAdmin && editMode && row !== null
 
+  // Edits are applied locally and recorded for undo/redo — nothing is sent (or
+  // visible to visitors) until "Done Editing" runs the committer below.
   const save = useCallback(async (path: string, value: unknown) => {
     if (!row) return
-    const prevContent = content
-    const nextContent = setByPath(content, path, value)
-    setContent(nextContent)
-    setSaving(true)
-    try {
+    const prev = contentRef.current
+    const next = setByPath(prev, path, value)
+    contentRef.current = next
+    setContent(next)
+    record({
+      label: `Edit ${path}`,
+      undo: () => { contentRef.current = prev; setContent(prev) },
+      redo: () => { contentRef.current = next; setContent(next) },
+    })
+  }, [row, record])
+
+  useEffect(() => {
+    if (!isAdmin) return
+    return registerCommitter(`static:${slug}`, async () => {
+      const r = rowRef.current
+      const toSave = contentRef.current
+      if (!r || toSave === savedRef.current) return
       const res = await fetch(`/api/admin/pages/static/${slug}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title: row.title ?? undefined,
-          seo_title: row.seo_title ?? null,
-          seo_description: row.seo_description ?? null,
-          sub_title: row.sub_title ?? null,
-          h3_text: row.h3_text ?? null,
-          short_description: row.short_description ?? null,
-          meta_keyword: row.meta_keyword ?? null,
-          content_json: nextContent,
-          // Inline edits publish immediately — there's no separate draft step.
+          title: r.title ?? undefined,
+          seo_title: r.seo_title ?? null,
+          seo_description: r.seo_description ?? null,
+          sub_title: r.sub_title ?? null,
+          h3_text: r.h3_text ?? null,
+          short_description: r.short_description ?? null,
+          meta_keyword: r.meta_keyword ?? null,
+          content_json: toSave,
           status: 'published',
         }),
       })
-      if (!res.ok) throw new Error('save failed')
-      toast.success('Saved')
-      router.refresh()
-    } catch {
-      setContent(prevContent)
-      toast.error('Save failed — please try again')
-    } finally {
-      setSaving(false)
-    }
-  }, [content, row, slug, router])
+      if (!res.ok) throw new Error('Saving the page content failed')
+      savedRef.current = toSave
+    })
+  }, [isAdmin, slug, registerCommitter])
 
   return (
-    <StaticPageEditContext.Provider value={{ canEdit, saving, getValue, save }}>
+    <StaticPageEditContext.Provider value={{ canEdit, saving: false, getValue, save }}>
       {children}
     </StaticPageEditContext.Provider>
   )
