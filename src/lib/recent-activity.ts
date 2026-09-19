@@ -40,14 +40,13 @@ interface TableMeta {
 // operational noise for this panel.
 type ContentTable =
   | 'blog_posts' | 'static_pages' | 'services' | 'industries'
-  | 'projects' | 'locations' | 'faqs' | 'search_content' | 'seo_pages'
+  | 'projects' | 'faqs' | 'search_content' | 'seo_pages'
 
 const TABLES: Record<ContentTable, TableMeta> = {
   // No admin page anymore — edited inline on the homepage — so no edit link.
   services: { label: 'Service', idColumn: 'id', titleColumn: 'name', href: null },
   industries: { label: 'Industry', idColumn: 'id', titleColumn: 'name', href: null },
   projects: { label: 'Case Study', idColumn: 'id', titleColumn: 'title', href: id => `/admin/projects/${id}` },
-  locations: { label: 'Location', idColumn: 'id', titleColumn: 'name', href: id => `/admin/locations/${id}` },
   seo_pages: { label: 'SEO Page', idColumn: 'id', titleColumn: 'headline', href: id => `/admin/seo-pages/${id}` },
   blog_posts: { label: 'Blog Post', idColumn: 'id', titleColumn: 'title', createdByColumn: 'author_id', href: id => `/admin/seo-blog/${id}` },
   static_pages: { label: 'Static Page', idColumn: 'slug', titleColumn: 'title', href: slug => `/admin/pages/static/${slug}` },

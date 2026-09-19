@@ -1,6 +1,6 @@
 'use client'
 
-import { useStaticPageEdit } from './StaticPageEditProvider'
+import { useEditContext } from './EditContext'
 import { useAdminEdit } from './AdminEditProvider'
 
 interface EditableTextProps {
@@ -28,7 +28,7 @@ interface EditableTextProps {
 // against whatever StaticPageEditProvider is mounted above it, or overridden
 // entirely via `onSave` for fields that don't live in that page's JSON.
 export function EditableText({ path, onSave, value, as: Tag = 'span', className, multiline = false }: EditableTextProps) {
-  const { canEdit, getValue, save, saving } = useStaticPageEdit()
+  const { canEdit, getValue, save, saving } = useEditContext()
   const { isAdmin, editMode } = useAdminEdit()
   // A custom `onSave` targets its own table directly (services, packages) and
   // has no page content_json to wait on — only the site-wide admin/edit-mode

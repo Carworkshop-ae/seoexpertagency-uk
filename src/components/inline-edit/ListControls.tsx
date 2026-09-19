@@ -1,7 +1,7 @@
 'use client'
 
 import { Plus, Minus } from 'lucide-react'
-import { useStaticPageEdit as useEditContext } from './StaticPageEditProvider'
+import { useEditContext } from './EditContext'
 
 interface ListControlsProps {
   /** Dot-path of the array in the page's content_json, e.g. "trust_bar.stats". */

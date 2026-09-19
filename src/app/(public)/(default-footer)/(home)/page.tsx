@@ -110,15 +110,19 @@ export default async function HomePage() {
       <Reveal>
         <ServiceCardsSection
           services={servicesToRender}
-          title="Our Core SEO Services"
-          subtitle="Data-backed search optimization strategies engineered to scale high-intent traffic, dominate keywords, and grow organic revenue."
-          eyebrow="WHAT WE DELIVER"
+          title={<EditableText path="services_section.title" value={content.services_section.title} as="span" />}
+          subtitle={<EditableText path="services_section.subtitle" value={content.services_section.subtitle} as="span" multiline />}
+          eyebrow={<EditableText path="services_section.eyebrow" value={content.services_section.eyebrow} as="span" />}
         />
       </Reveal>
 
       {/* 4. Packages / Pricing */}
       <Reveal>
-        <PackagesSection />
+        <PackagesSection
+          title={<EditableText path="packages_section.title" value={content.packages_section.title} as="span" />}
+          subtitle={<EditableText path="packages_section.subtitle" value={content.packages_section.subtitle} as="span" multiline />}
+          eyebrow={<EditableText path="packages_section.eyebrow" value={content.packages_section.eyebrow} as="span" />}
+        />
       </Reveal>
 
       {/* 5. High-Impact CTA Banner */}
@@ -136,17 +140,34 @@ export default async function HomePage() {
 
       {/* 6. Industries We Serve */}
       <Reveal>
-        <IndustriesSection />
+        <IndustriesSection
+          title={<EditableText path="industries_section.title" value={content.industries_section.title} as="span" />}
+          subtitle={<EditableText path="industries_section.subtitle" value={content.industries_section.subtitle} as="span" multiline />}
+          eyebrow={<EditableText path="industries_section.eyebrow" value={content.industries_section.eyebrow} as="span" />}
+        />
       </Reveal>
 
       {/* 7. Projects / Case Studies */}
       <Reveal>
-        <ProjectsSection />
+        <ProjectsSection
+          title={<EditableText path="projects_section.title" value={content.projects_section.title} as="span" />}
+          subtitle={<EditableText path="projects_section.subtitle" value={content.projects_section.subtitle} as="span" multiline />}
+          eyebrow={<EditableText path="projects_section.eyebrow" value={content.projects_section.eyebrow} as="span" />}
+        />
       </Reveal>
 
       {/* 8. 4-Step SEO Framework */}
       <Reveal>
-        <ProcessSteps />
+        <ProcessSteps
+          title={<EditableText path="process_steps.title" value={content.process_steps.title} as="span" />}
+          subtitle={<EditableText path="process_steps.subtitle" value={content.process_steps.subtitle} as="span" multiline />}
+          eyebrow={<EditableText path="process_steps.eyebrow" value={content.process_steps.eyebrow} as="span" />}
+          steps={content.process_steps.steps.map((s, i) => ({
+            number: i + 1,
+            title: <EditableText path={`process_steps.steps.${i}.title`} value={s.title} as="span" />,
+            description: <EditableText path={`process_steps.steps.${i}.description`} value={s.description} as="span" multiline />,
+          }))}
+        />
       </Reveal>
 
       {/* 9. Why Choose Us */}
@@ -164,22 +185,50 @@ export default async function HomePage() {
 
       {/* 10. Client Testimonials */}
       <Reveal>
-        <TestimonialsSection />
+        <TestimonialsSection
+          title={<EditableText path="testimonials.title" value={content.testimonials.title} as="span" />}
+          subtitle={<EditableText path="testimonials.subtitle" value={content.testimonials.subtitle} as="span" multiline />}
+          eyebrow={<EditableText path="testimonials.eyebrow" value={content.testimonials.eyebrow} as="span" />}
+          testimonials={content.testimonials.items.map((t, i) => ({
+            quote: <EditableText path={`testimonials.items.${i}.quote`} value={t.quote} as="span" multiline />,
+            name: <EditableText path={`testimonials.items.${i}.name`} value={t.name} as="span" />,
+            role: <EditableText path={`testimonials.items.${i}.role`} value={t.role} as="span" />,
+            rating: t.rating,
+          }))}
+        />
+        <ListControls path="testimonials.items" noun="testimonial" template={{ quote: 'Client feedback goes here.', name: 'Client name or title', role: 'Company or industry', rating: 5 }} />
       </Reveal>
 
       {/* 11. SEO Blog Preview */}
       <Reveal>
-        <BlogPreview posts={(posts as unknown as BlogPost[]) ?? []} />
+        <BlogPreview
+          posts={(posts as unknown as BlogPost[]) ?? []}
+          title={<EditableText path="blog_section.title" value={content.blog_section.title} as="span" />}
+          subtitle={<EditableText path="blog_section.subtitle" value={content.blog_section.subtitle} as="span" multiline />}
+          eyebrow={<EditableText path="blog_section.eyebrow" value={content.blog_section.eyebrow} as="span" />}
+        />
       </Reveal>
 
       {/* 12. FAQ Section with Schema */}
       <Reveal>
-        <FAQSection faqs={faqs} />
+        <FAQSection
+          faqs={faqs}
+          title={<EditableText path="faq_section.title" value={content.faq_section.title} as="span" />}
+          subtitle={<EditableText path="faq_section.subtitle" value={content.faq_section.subtitle} as="span" multiline />}
+          eyebrow={<EditableText path="faq_section.eyebrow" value={content.faq_section.eyebrow} as="span" />}
+        />
       </Reveal>
 
       {/* 13. Final Conversion CTA */}
       <Reveal>
-        <FinalCTASection />
+        <FinalCTASection
+          badge={<EditableText path="final_cta.badge" value={content.final_cta.badge} as="span" />}
+          phoneText={<EditableText path="final_cta.phone_text" value={content.final_cta.phone_text} as="span" />}
+          phoneHref={content.final_cta.phone_link}
+          heading={<EditableText path="final_cta.heading" value={content.final_cta.heading} as="span" />}
+          subtitle={<EditableText path="final_cta.subtitle" value={content.final_cta.subtitle} as="span" multiline />}
+          ctaText={<EditableText path="final_cta.cta_text" value={content.final_cta.cta_text} as="span" />}
+        />
       </Reveal>
     </StaticPageEditProvider>
   )

@@ -5,9 +5,9 @@ import { getServices } from '@/lib/data/content'
 
 interface ServiceCardsSectionProps {
   services?: SEOServiceData[]
-  title?: string
-  subtitle?: string
-  eyebrow?: string
+  title?: React.ReactNode
+  subtitle?: React.ReactNode
+  eyebrow?: React.ReactNode
   limit?: number
 }
 

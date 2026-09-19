@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { getMarket } from '@/lib/market'
 
 // Validation for the four CMS-managed marketing content types. They share a
 // common core (identity, SEO, status) plus a per-type set of JSON section
@@ -135,14 +134,11 @@ export const UpdateLocationSchema = CreateLocationSchema.partial()
 // badge field in its form).
 
 export const CreateSeoPageSchema = z.object({
-  // Geography is a property of the deployment, not the content: the .ae and .uk
-  // builds require a state, the global .com build has no country/state fields
-  // at all. The market is fixed at build time, so this branch is too — the
-  // column itself is nullable (005_market_geography.sql) and this is what
-  // actually enforces the requirement on the two geo markets.
-  location_id: getMarket().hasGeo
-    ? z.string().uuid('Select a state')
-    : z.preprocess(v => (v === '' ? null : v), z.string().uuid().nullable().optional()),
+  // Geo-targeting (state/location) is no longer set from the SEO page form —
+  // the column stays nullable (005_market_geography.sql) for old rows that
+  // still carry a location_id, but new/edited pages never set one.
+  // The edit form round-trips a null column as '' — treat blank as "none".
+  location_id: z.preprocess(v => (v === '' ? null : v), z.string().uuid().nullable().optional()),
   headline: z.string().max(300).trim().optional().nullable(),
   subheadline: z.string().max(500).trim().optional().nullable(),
   overview: z.string().max(20000).optional().nullable(),
@@ -150,6 +146,10 @@ export const CreateSeoPageSchema = z.object({
   why_choose_us_heading: z.string().max(150).trim().optional().nullable(),
   why_choose_us_json: z.array(TitleDescSchema).max(12).default([]),
   faq_json: z.array(FAQItemSchema).max(30).default([]),
+  // Per-page overrides for the shared sections (Trust Bar, Process Steps, CTA
+  // Banner, Final CTA, Testimonials, section headers) — untyped on purpose,
+  // same as static_pages.content_json; shape is owned by the public template.
+  sections_json: z.record(z.string(), z.unknown()).optional(),
   ...seoCore,
 })
 export const UpdateSeoPageSchema = CreateSeoPageSchema.partial()

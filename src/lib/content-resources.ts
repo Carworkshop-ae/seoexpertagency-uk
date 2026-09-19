@@ -3,7 +3,6 @@ import {
   CreateServiceSchema, UpdateServiceSchema,
   CreateIndustrySchema, UpdateIndustrySchema,
   CreateProjectSchema, UpdateProjectSchema,
-  CreateLocationSchema, UpdateLocationSchema,
   CreateSeoPageSchema, UpdateSeoPageSchema,
 } from '@/lib/schemas/content'
 
@@ -43,23 +42,13 @@ export const projectsResource: ContentResource<typeof CreateProjectSchema, typeo
   titleColumn: 'title',
 }
 
-export const locationsResource: ContentResource<typeof CreateLocationSchema, typeof UpdateLocationSchema> = {
-  table: 'locations',
-  collection: 'locations',
-  revalidateAs: 'location',
-  createSchema: CreateLocationSchema,
-  updateSchema: UpdateLocationSchema,
-  listColumns: `${LIST_COLUMNS}, name, region, country_code, seo_title, seo_description`,
-  titleColumn: 'name',
-}
-
 export const seoPagesResource: ContentResource<typeof CreateSeoPageSchema, typeof UpdateSeoPageSchema> = {
   table: 'seo_pages',
   collection: 'seo_pages',
   revalidateAs: 'seo_page',
   createSchema: CreateSeoPageSchema,
   updateSchema: UpdateSeoPageSchema,
-  listColumns: `${LIST_COLUMNS}, title:headline, seo_title, faq_json, location:locations(name), creator:users!created_by(full_name)`,
+  listColumns: `${LIST_COLUMNS}, title:headline, seo_title, faq_json, creator:users!created_by(full_name)`,
   titleColumn: 'headline',
   tracksCreator: true,
 }

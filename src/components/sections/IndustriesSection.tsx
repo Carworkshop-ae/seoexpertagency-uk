@@ -5,9 +5,9 @@ import { AddIndustryCard } from '@/components/sections/AddIndustryCard'
 
 interface IndustriesSectionProps {
   industries?: SEOIndustryData[]
-  title?: string
-  subtitle?: string
-  eyebrow?: string
+  title?: React.ReactNode
+  subtitle?: React.ReactNode
+  eyebrow?: React.ReactNode
 }
 
 export async function IndustriesSection({

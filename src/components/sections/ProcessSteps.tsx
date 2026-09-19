@@ -2,8 +2,8 @@ import { Search, Compass, Zap, TrendingUp } from 'lucide-react'
 
 interface Step {
   number: number
-  title: string
-  description: string
+  title: React.ReactNode
+  description: React.ReactNode
   icon?: React.ReactNode
 }
 
@@ -35,9 +35,9 @@ const DEFAULT_SEO_STEPS: Step[] = [
 ]
 
 interface ProcessStepsProps {
-  title?: string
-  subtitle?: string
-  eyebrow?: string
+  title?: React.ReactNode
+  subtitle?: React.ReactNode
+  eyebrow?: React.ReactNode
   steps?: Step[]
 }
 

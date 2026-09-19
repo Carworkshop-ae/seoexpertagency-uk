@@ -5,9 +5,9 @@ import { PackageCard } from '@/components/sections/PackageCard'
 
 interface PackagesSectionProps {
   packages?: SEOPackageData[]
-  title?: string
-  subtitle?: string
-  eyebrow?: string
+  title?: React.ReactNode
+  subtitle?: React.ReactNode
+  eyebrow?: React.ReactNode
 }
 
 export async function PackagesSection({

@@ -8,6 +8,11 @@ export interface HomeStep { icon: string; title: string; description: string }
 export interface HomeUSP { icon: string; title: string; description: string }
 export interface HomeReview { name: string; rating: number; service: string; text: string }
 export interface HomeFAQ { q: string; a: string }
+export interface HomeTestimonial { quote: string; name: string; role: string; rating?: number }
+/** Editable copy for a section whose only per-page-varying fields are its own
+ *  header — the cards/rows underneath come from their own table (services,
+ *  packages, industries, projects, blog_posts) or the FAQ block above. */
+export interface HomeSectionHeader { title: string; subtitle: string; eyebrow: string }
 
 export interface HomeContent {
   hero: { badge: string; h1: string; subheadline: string; cta_primary_text: string; cta_primary_link: string; cta_secondary_text: string; cta_secondary_link: string; image_url: string | null }
@@ -20,6 +25,15 @@ export interface HomeContent {
   locations: { visible: boolean; heading: string }
   faq: { visible: boolean; heading: string; faqs: HomeFAQ[] }
   cta_banner: { visible: boolean; badge: string; headline: string; subheadline: string; button_text: string; button_link: string; secondary_text: string; secondary_link: string; bg_color: string }
+  process_steps: { title: string; subtitle: string; eyebrow: string; steps: HomeStep[] }
+  testimonials: { title: string; subtitle: string; eyebrow: string; items: HomeTestimonial[] }
+  final_cta: { badge: string; heading: string; subtitle: string; cta_text: string; phone_text: string; phone_link: string }
+  services_section: HomeSectionHeader
+  packages_section: HomeSectionHeader
+  industries_section: HomeSectionHeader
+  projects_section: HomeSectionHeader
+  blog_section: HomeSectionHeader
+  faq_section: HomeSectionHeader
 }
 
 // Fallback copy shown when static_pages.content_json is empty — set to match
@@ -53,6 +67,41 @@ export const HOME_DEFAULTS: HomeContent = {
   locations: { visible: true, heading: 'Where We Work' },
   faq: { visible: true, heading: 'Common Questions', faqs: [] },
   cta_banner: { visible: true, badge: 'Zero Obligation · Custom Strategy', headline: 'Ready to Grow Your Search Visibility?', subheadline: 'Schedule a 30-minute discovery call with our senior SEO strategists and receive a free comprehensive technical & keyword opportunity audit.', button_text: 'Get Your Free SEO Consultation', button_link: '/contact', secondary_text: 'Call Us Directly', secondary_link: 'tel:+9714800736', bg_color: '#0066FF' },
+  process_steps: {
+    title: 'Our Proven 4-Step SEO Framework',
+    subtitle: 'A systematic, repeatable methodology that turns search engines into your most predictable customer acquisition channel.',
+    eyebrow: 'HOW WE DELIVER RESULTS',
+    steps: [
+      { icon: '', title: 'Discovery & Deep Audit', description: 'We perform deep technical crawl diagnostics, log file reviews, and comprehensive competitor keyword gap analysis.' },
+      { icon: '', title: 'Strategic Architecture', description: 'We map out a sprint-by-sprint 12-month roadmap prioritizing high-impact quick wins and long-term search dominance.' },
+      { icon: '', title: 'Execution & Optimization', description: 'Our team implements technical fixes, Core Web Vitals optimizations, semantic content clusters, and structured schema.' },
+      { icon: '', title: 'Authority & Revenue Scale', description: 'We earn tier-1 editorial backlinks through digital PR and continuously optimize conversion funnels for maximum pipeline.' },
+    ],
+  },
+  testimonials: {
+    title: 'Trusted by Growth-Focused Teams',
+    subtitle: 'Real feedback from clients who partnered with us to turn organic search into a predictable revenue channel.',
+    eyebrow: 'CLIENT REVIEWS',
+    items: [
+      { quote: 'Our organic traffic more than doubled within two quarters, and for the first time we could actually trace pipeline revenue back to specific keyword rankings.', name: 'VP of Marketing', role: 'B2B SaaS company', rating: 5 },
+      { quote: 'What stood out was the transparency — weekly rank tracking, clear technical audits, and a team that explained the "why" behind every recommendation.', name: 'Director of E-Commerce', role: 'Online retail brand', rating: 5 },
+      { quote: 'We had tried two other agencies before this. The difference was having senior strategists actually doing the work instead of handing it off to juniors.', name: 'Founder', role: 'Professional services firm', rating: 5 },
+    ],
+  },
+  final_cta: {
+    badge: 'Scale Your Organic Revenue',
+    heading: "Let's Build Your Search Growth Strategy",
+    subtitle: 'Get in touch today for an in-depth competitive search audit, technical roadmap, and predictable organic growth plan.',
+    cta_text: 'Book a Free Consultation',
+    phone_text: 'Call +971 4 800 736',
+    phone_link: 'tel:+9714800736',
+  },
+  services_section: { title: 'Our Core SEO Services', subtitle: 'Data-backed search optimization strategies engineered to scale high-intent traffic, dominate keywords, and grow organic revenue.', eyebrow: 'WHAT WE DELIVER' },
+  packages_section: { title: 'Predictable, Transparent SEO Packages', subtitle: 'Choose the ideal engagement tier engineered to outpace your competitors and scale organic customer acquisition.', eyebrow: 'TRANSPARENT PRICING' },
+  industries_section: { title: 'Tailored SEO for High-Growth Industries', subtitle: 'Every industry operates under distinct search dynamics. We build bespoke search strategies that address the exact buyer intent and competitive barriers of your market.', eyebrow: 'SPECIALIZED EXPERTISE' },
+  projects_section: { title: 'Proven Organic Growth Case Studies', subtitle: 'Discover how our technical architecture audits, strategic content hubs, and authority campaigns deliver predictable commercial search impact.', eyebrow: 'PROVEN METHODOLOGY' },
+  blog_section: { title: 'Latest SEO Insights & Search Research', subtitle: 'Actionable guides, technical breakdowns, and algorithm analysis from our search marketing strategists.', eyebrow: 'KNOWLEDGE & INSIGHTS' },
+  faq_section: { title: 'Frequently Asked Questions', subtitle: 'Clear answers to common questions about our data-driven SEO methodologies, retainers, and timelines.', eyebrow: 'QUESTIONS & ANSWERS' },
 }
 
 export function mergeHomeContent(saved: Partial<HomeContent> | null | undefined): HomeContent {
@@ -68,6 +117,15 @@ export function mergeHomeContent(saved: Partial<HomeContent> | null | undefined)
     locations: { ...HOME_DEFAULTS.locations, ...c.locations },
     faq: { ...HOME_DEFAULTS.faq, ...c.faq },
     cta_banner: { ...HOME_DEFAULTS.cta_banner, ...c.cta_banner },
+    process_steps: { ...HOME_DEFAULTS.process_steps, ...c.process_steps },
+    testimonials: { ...HOME_DEFAULTS.testimonials, ...c.testimonials },
+    final_cta: { ...HOME_DEFAULTS.final_cta, ...c.final_cta },
+    services_section: { ...HOME_DEFAULTS.services_section, ...c.services_section },
+    packages_section: { ...HOME_DEFAULTS.packages_section, ...c.packages_section },
+    industries_section: { ...HOME_DEFAULTS.industries_section, ...c.industries_section },
+    projects_section: { ...HOME_DEFAULTS.projects_section, ...c.projects_section },
+    blog_section: { ...HOME_DEFAULTS.blog_section, ...c.blog_section },
+    faq_section: { ...HOME_DEFAULTS.faq_section, ...c.faq_section },
   }
 }
 
@@ -78,6 +136,7 @@ export interface AboutContent {
   hero: { h1: string; subheadline: string }
   philosophy: { heading: string; intro_paragraph: string; tech_heading: string; tech_paragraph: string }
   pillars: AboutPillar[]
+  process_steps: { title: string; subtitle: string; eyebrow: string; steps: HomeStep[] }
   why_choose_us: { visible: boolean; heading: string; items: HomeUSP[] }
   faq: { visible: boolean; heading: string; faqs: HomeFAQ[] }
   cta_banner: { visible: boolean; headline: string; subheadline: string; button_text: string; button_link: string }
@@ -97,6 +156,7 @@ export const ABOUT_DEFAULTS: AboutContent = {
     { icon: '🎯', title: 'Commercial Intent Focus', description: 'We prioritize search queries that drive qualified sales pipelines, inbound demos, and high-margin transactions over vanity impression spikes.' },
     { icon: '👥', title: 'Senior Strategist Direct Access', description: 'Every client partners directly with seasoned SEO directors and technical leads who have hands-on experience scaling high-traffic enterprise architectures.' },
   ],
+  process_steps: { ...HOME_DEFAULTS.process_steps },
   why_choose_us: { visible: true, heading: 'Why Ambitious Brands Choose SEO Expert Agency', items: HOME_DEFAULTS.why_choose_us.items },
   faq: { visible: true, heading: 'Frequently Asked Questions', faqs: [] },
   cta_banner: { visible: true, headline: 'Ready to Partner With an Engineering-Grade SEO Agency?', subheadline: 'Schedule a free technical diagnostic and strategy presentation with our senior directors.', button_text: 'Book Strategy Discovery', button_link: '/contact' },
@@ -112,6 +172,7 @@ export function mergeAboutContent(saved: Partial<AboutContent> | null | undefine
     hero: { ...ABOUT_DEFAULTS.hero, ...c.hero },
     philosophy: { ...ABOUT_DEFAULTS.philosophy, ...c.philosophy },
     pillars: c.pillars && c.pillars.length > 0 ? c.pillars : ABOUT_DEFAULTS.pillars,
+    process_steps: { ...ABOUT_DEFAULTS.process_steps, ...c.process_steps },
     why_choose_us: { ...ABOUT_DEFAULTS.why_choose_us, ...c.why_choose_us },
     faq: { ...ABOUT_DEFAULTS.faq, ...c.faq },
     cta_banner: { ...ABOUT_DEFAULTS.cta_banner, ...c.cta_banner },

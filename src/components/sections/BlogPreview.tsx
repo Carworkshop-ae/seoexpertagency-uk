@@ -32,9 +32,9 @@ const DEFAULT_SEO_POSTS: Array<Partial<BlogPost> & { title: string; slug: string
 
 interface BlogPreviewProps {
   posts?: BlogPost[]
-  title?: string
-  subtitle?: string
-  eyebrow?: string
+  title?: React.ReactNode
+  subtitle?: React.ReactNode
+  eyebrow?: React.ReactNode
 }
 
 export function BlogPreview({

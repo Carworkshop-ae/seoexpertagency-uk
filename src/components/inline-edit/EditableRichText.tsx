@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { RichTextEditor } from '@/components/admin/RichTextEditor'
-import { useStaticPageEdit } from './StaticPageEditProvider'
+import { useEditContext } from './EditContext'
 
 interface EditableRichTextProps {
   /** Dot-path into the page's content_json, e.g. "content". */
@@ -18,7 +18,7 @@ interface EditableRichTextProps {
 // "Edit" affordance that swaps in the existing TipTap RichTextEditor with
 // explicit Save/Cancel — sanitization happens server-side on save either way.
 export function EditableRichText({ path, value, className }: EditableRichTextProps) {
-  const { canEdit, getValue, save, saving } = useStaticPageEdit()
+  const { canEdit, getValue, save, saving } = useEditContext()
   const [editing, setEditing] = useState(false)
   const [draft, setDraft] = useState('')
 

@@ -4,7 +4,7 @@ import { Suspense, useState, useSyncExternalStore } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import {
-  LayoutDashboard, HelpCircle, Languages, Briefcase, MapPin,
+  LayoutDashboard, HelpCircle, Languages, Briefcase,
   FileText, FileSearch, Search, Settings, UserCog, Users, LayoutTemplate, Files,
   Image as ImageIcon, Activity, LogOut, ChevronDown, type LucideIcon,
 } from 'lucide-react'
@@ -19,14 +19,13 @@ interface NavItem { label: string; href: string; icon: LucideIcon }
 // on the homepage, which any signed-in staff role (including seo_editor) can
 // already do via the still-allowed /api/admin/services and /api/admin/industries.
 const SEO_EDITOR_ALLOWED = [
-  '/admin/projects', '/admin/locations',
+  '/admin/projects',
   '/admin/seo-blog', '/admin/static-page-seo', '/admin/search-content',
 ]
 
 const MAIN_NAV: NavItem[] = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
   { label: 'Projects', href: '/admin/projects', icon: Briefcase },
-  { label: 'Locations', href: '/admin/locations', icon: MapPin },
   { label: 'SEO Pages', href: '/admin/seo-pages', icon: Files },
   { label: 'SEO Blog', href: '/admin/seo-blog', icon: FileText },
   { label: 'Static Pages', href: '/admin/pages/static', icon: LayoutTemplate },

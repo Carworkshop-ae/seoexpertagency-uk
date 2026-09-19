@@ -101,7 +101,16 @@ export default async function AboutPage() {
       </section>
 
       {/* Methodology */}
-      <ProcessSteps />
+      <ProcessSteps
+        title={<EditableText path="process_steps.title" value={content.process_steps.title} as="span" />}
+        subtitle={<EditableText path="process_steps.subtitle" value={content.process_steps.subtitle} as="span" multiline />}
+        eyebrow={<EditableText path="process_steps.eyebrow" value={content.process_steps.eyebrow} as="span" />}
+        steps={content.process_steps.steps.map((s, i) => ({
+          number: i + 1,
+          title: <EditableText path={`process_steps.steps.${i}.title`} value={s.title} as="span" />,
+          description: <EditableText path={`process_steps.steps.${i}.description`} value={s.description} as="span" multiline />,
+        }))}
+      />
 
       {/* Why Choose Us */}
       <WhyChooseUs

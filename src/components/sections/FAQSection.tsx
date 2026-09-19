@@ -4,9 +4,9 @@ import type { FAQItem } from '@/types'
 
 interface FAQSectionProps {
   faqs?: FAQItem[]
-  title?: string
-  subtitle?: string
-  eyebrow?: string
+  title?: React.ReactNode
+  subtitle?: React.ReactNode
+  eyebrow?: React.ReactNode
   includeSchema?: boolean
 }
 

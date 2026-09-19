@@ -75,11 +75,11 @@ export async function proxy(req: NextRequest) {
       // inline on the homepage, which only needs the API routes below
       // (already allowed), not an admin page.
       const allowedPages = [
-        '/admin/projects', '/admin/locations',
+        '/admin/projects',
         '/admin/seo-blog', '/admin/static-page-seo', '/admin/pages/static', '/admin/search-content',
       ]
       const allowedApi = [
-        '/api/admin/services', '/api/admin/industries', '/api/admin/projects', '/api/admin/locations',
+        '/api/admin/services', '/api/admin/industries', '/api/admin/projects',
         '/api/admin/seo-blog', '/api/admin/static-page-seo', '/api/admin/pages/static',
         '/api/admin/search-content', '/api/admin/media', '/api/admin/me', '/api/admin/logout',
       ]

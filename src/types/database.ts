@@ -790,6 +790,7 @@ export type Database = {
           og_image_url: string | null
           overview: string | null
           seo_description: string | null
+          sections_json: Json
           seo_json: Json
           seo_title: string | null
           slug: string
@@ -810,6 +811,7 @@ export type Database = {
           meta_keyword?: string | null
           og_image_url?: string | null
           overview?: string | null
+          sections_json?: Json
           seo_description?: string | null
           seo_json?: Json
           seo_title?: string | null
@@ -831,6 +833,7 @@ export type Database = {
           meta_keyword?: string | null
           og_image_url?: string | null
           overview?: string | null
+          sections_json?: Json
           seo_description?: string | null
           seo_json?: Json
           seo_title?: string | null

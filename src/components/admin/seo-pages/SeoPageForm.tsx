@@ -1,7 +1,6 @@
 'use client'
 
-import { useMemo, useState, type ReactNode } from 'react'
-import Link from 'next/link'
+import { useState, type ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { Minus, Plus, Eye } from 'lucide-react'
@@ -10,7 +9,6 @@ import { AdminButton } from '@/components/admin/ui/AdminButton'
 import { RichTextEditor } from '@/components/admin/RichTextEditor'
 import { Repeater, inputCls } from '@/components/admin/ui/Repeater'
 import { generateSlug } from '@/lib/page-engine/slugify'
-import { getMarket } from '@/lib/market'
 import type { FieldValue } from '@/components/admin/content/ContentForm'
 
 // Visually distinct from the shared ContentForm used by Services/Industries/
@@ -39,17 +37,13 @@ function GreenSection({ title, badge, children, defaultOpen = true }: { title: s
   )
 }
 
-export interface StateOption { id: string; name: string; slug: string; country_code: string }
-
 interface Props {
   id?: string
   initial: Record<string, FieldValue>
-  states: StateOption[]
 }
 
-export function SeoPageForm({ id, initial, states }: Props) {
+export function SeoPageForm({ id, initial }: Props) {
   const router = useRouter()
-  const market = getMarket()
   const [v, setV] = useState<Record<string, FieldValue>>(initial)
   const [saving, setSaving] = useState<'edit' | 'exit' | false>(false)
   const [slugTouched, setSlugTouched] = useState(Boolean(id))
@@ -57,57 +51,17 @@ export function SeoPageForm({ id, initial, states }: Props) {
   const set = (key: string, value: FieldValue) => setV(prev => ({ ...prev, [key]: value }))
   const str = (key: string) => (typeof v[key] === 'string' ? (v[key] as string) : '')
 
-  const selectedState = states.find(s => s.id === str('location_id'))
-
-  // Only this deployment's country belongs in the State dropdown — the .ae site
-  // must never offer a UK state. Locations with a blank country_code are kept:
-  // the Locations form leaves it empty by default, and silently hiding the
-  // admin's own rows would be worse than showing one that needs its code set.
-  // The page's current state always stays selectable, whatever its code.
-  const marketStates = useMemo(
-    () => states.filter(s =>
-      !s.country_code ||
-      s.country_code.toUpperCase() === market.countryCode ||
-      s.id === str('location_id')
-    ),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [states, market.countryCode, v.location_id]
-  )
-
-  // The URL is `{state slug}/{headline slug}` — recomputed from whichever of
-  // state/headline last changed, until the admin hand-edits the slug field.
-  function recomputeSlug(stateSlug: string | undefined, headline: string) {
-    const parts = [stateSlug, generateSlug(headline)].filter(Boolean)
-    return parts.join('/')
-  }
-
   function setHeadline(value: string) {
     setV(prev => ({
       ...prev,
       headline: value,
-      ...(slugTouched ? {} : { slug: recomputeSlug(selectedState?.slug, value) }),
-    }))
-  }
-
-  function setLocation(locationId: string) {
-    const state = states.find(s => s.id === locationId)
-    setV(prev => ({
-      ...prev,
-      location_id: locationId,
-      ...(slugTouched ? {} : { slug: recomputeSlug(state?.slug, str('headline')) }),
+      ...(slugTouched ? {} : { slug: generateSlug(value) }),
     }))
   }
 
   async function save(mode: 'edit' | 'exit') {
     // Validate here rather than letting the API's Zod errors stand in for it:
-    // the three required fields are spread across collapsible sections, and a
-    // round-trip that comes back "Select a state" doesn't say where to look.
-    if (market.hasGeo && !str('location_id')) {
-      toast.error(marketStates.length === 0
-        ? `No ${market.countryName} states exist yet — add a Location first (Admin → Locations)`
-        : 'Select a state')
-      return
-    }
+    // a round-trip that comes back with a generic error doesn't say where to look.
     if (!str('headline').trim()) { toast.error('Title (H1) is required'); return }
     if (!str('slug').trim()) { toast.error('URL slug is required'); return }
 
@@ -141,35 +95,7 @@ export function SeoPageForm({ id, initial, states }: Props) {
 
   return (
     <div className="max-w-4xl space-y-0">
-      {market.hasGeo && marketStates.length === 0 && (
-        <div className="mb-5 rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          <strong className="font-semibold">No {market.countryName} states available.</strong> An SEO
-          page on this site must belong to a state, and no location is set up for this market yet —
-          so the form cannot be saved.{' '}
-          <Link href="/admin/locations/new" className="underline font-medium">Add a location</Link>{' '}
-          first, then come back.
-        </div>
-      )}
       <GreenSection title="Page Details">
-        {/* The global (.com) deployment has no geography — no country, no state. */}
-        {market.hasGeo && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <AdminInput
-              label="Country"
-              disabled
-              hint="Fixed for this site"
-              value={market.countryName}
-              onChange={() => {}}
-            />
-            <AdminSelect
-              label="State"
-              required
-              value={str('location_id')}
-              onChange={e => setLocation(e.target.value)}
-              options={marketStates.map(s => ({ value: s.id, label: s.name }))}
-            />
-          </div>
-        )}
         <AdminInput
           label="Title (H1)"
           required

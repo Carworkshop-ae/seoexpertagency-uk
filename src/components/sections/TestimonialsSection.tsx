@@ -3,9 +3,9 @@ import { Quote, Star } from 'lucide-react'
 // Placeholder copy — no real client has been quoted yet. Replace every entry
 // here with a genuine, permissioned review before this ships to real traffic.
 interface Testimonial {
-  quote: string
-  name: string
-  role: string
+  quote: React.ReactNode
+  name: React.ReactNode
+  role: React.ReactNode
   rating?: number
 }
 
@@ -32,9 +32,9 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
 
 interface TestimonialsSectionProps {
   testimonials?: Testimonial[]
-  title?: string
-  subtitle?: string
-  eyebrow?: string
+  title?: React.ReactNode
+  subtitle?: React.ReactNode
+  eyebrow?: React.ReactNode
 }
 
 export function TestimonialsSection({
